@@ -3,26 +3,13 @@
 <head>
 	<meta charset="utf-8">
 	<meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
-	<title>选择坑型</title>
+	<title>选择门店</title>
 	<link rel="stylesheet" type="text/css" href="../css/api.css" />
+	<link rel="stylesheet" type="text/css" href="../css/common.css" />
 	<link rel="stylesheet" type="text/css" href="../css/fonts/css/font-awesome.min.css" />
 	<style>
-		#header{
-			text-align: center; background-color: #fefefe; 
-			width: 100%; border-bottom: 1px solid #bbb;
-		}
-		#header h1{
-		    position: relative;
-		    font-size: 20px; height: 44px; line-height: 44px; margin: 0em; 
-		}
-		#header .cancel{
-			position: absolute; left: 14px; bottom: 0; 
-		}
-		#header .fa-map-marker{
-			position: absolute; right: 14px; bottom: 12px;
-		}
 		#filter{
-			border-top: 1px solid #bbb; 
+			border-top: 1px solid #bbb;
 			display: -webkit-box;
 		    display: -webkit-flex;
 		    display: flex;
@@ -33,7 +20,7 @@
 		#filter span{
 			display:inline-block; height: 40px; line-height: 40px; text-align: center;
 			overflow: hidden;
-			-webkit-box-flex: 1; 
+			-webkit-box-flex: 1;
             -webkit-flex: 1;
             flex: 1;
 		}
@@ -53,9 +40,11 @@
 <body>
 	<div id="header">
 		<h1>
-		<span class="cancel" tapmode onclick="api.closeWin({name: 'dropping'});">取消</span>
-		选择坑型
-		<i class="fa fa-map-marker"></i>
+			<span class="cancel" tapmode="active" onclick="api.closeWin({name: 'dropping'});">
+				<i class="fa fa-angle-left"></i>
+			</span>
+			选择门店
+			<!--<i class="fa fa-map-marker"></i>-->
 		</h1>
 		<div id="filter">
 			<span tapmode onclick="filter();">
@@ -83,14 +72,14 @@
 	function filter(){
 		$('#filter .active').removeClass('active');
 		$(event.target).find('i').addClass('active');
-		
+
 		api.openFrame({
 	        name: 'frm_dropping'
         });
 	}
 	apiready = function(){
 		var header = $api.byId('header');
-        $api.fixIos7Bar(header); 
+        $api.fixIos7Bar(header);
         var headerPos = $api.offset(header);
 		api.openFrame({
 	        name: 'frm_dropping',

@@ -8,37 +8,11 @@
     <link rel="stylesheet" type="text/css" href="./css/common.css" />
     <link rel="stylesheet" type="text/css" href="./css/fonts/css/font-awesome.min.css" />
     <style>
-    	#footer{
-            height: 120px;
-        }
-        #tab{
+    	  #footer{
             height: 60px;
-            text-align: center;
+            padding-top:10px;
         }
-        #tab span{
-            display: inline-block; width: 3em; padding-top: 30px; font-size: 14px;
-            margin-right: 20px;
-        }
-        #tab .t1{
-            background: url(./image/t1_g.png) no-repeat center 4px;
-            -webkit-background-size: 20px 22px;
-            background-size: 20px 22px;
-        }
-        #tab .t1.active{
-            background: url(./image/t1.png) no-repeat center 4px;
-            -webkit-background-size: 20px 22px;
-            background-size: 20px 22px;
-        }
-        #tab .t2{
-            background: url(./image/t2_g.png) no-repeat center top;
-            -webkit-background-size: 32px 29px;
-            background-size: 32px 29px;
-        }
-        #tab .t2.active{
-            background: url(./image/t2.png) no-repeat center top;
-            -webkit-background-size: 32px 29px;
-            background-size: 32px 29px;
-        }
+
         #content{
             display: -webkit-box;
             display: -webkit-flex;
@@ -48,13 +22,13 @@
                    flex-flow: row;
         }
         #content .shit{
-            -webkit-box-flex: 1; 
+            -webkit-box-flex: 1;
             -webkit-flex: 1;
             flex: 1;
         }
         .voice, .order{
             width: 42px; height: 42px; border-radius: 42px;
-            border:1px solid #ff8e05; text-align: center; line-height: 42px; 
+            border:1px solid #ff8e05; text-align: center; line-height: 42px;
             font-size: 20px; color: #ff8903;
         }
         .voice{
@@ -65,9 +39,11 @@
         }
         .shit{
             border-radius: 6px; color: #fff; font-size: 20px;
-            text-align: center; line-height: 42px; text-indent: -9999px;
+            text-align: center; line-height: 42px;
+            color: white;
+            font-size: 21px;
             margin: 0 10px;
-            background:#f88f00 url(./image/shit.png) no-repeat center;
+            background:#f88f00;
             -webkit-background-size: 108px 27px;
             background-size: 108px 27px;
         }
@@ -76,19 +52,15 @@
 <body>
     <div id="wrap">
         <div id="header">
-            <h1><div class="logo" tapmode="" onclick="openSideNav();"></div>didiShit</h1>
+            <h1><div class="logo" tapmode="" onclick="openSideNav();"></div>洗 呗</h1>
         </div>
         <div id="main">
-                
+
         </div>
         <div id="footer">
-            <div id="tab">
-                <span class="t1" tapmode onclick="switchIt(1);">坐便式</span>
-                <span class="t2 active" tapmode onclick="switchIt(2);">蹲坑式</span>
-            </div>
             <div id="content">
                 <div class="voice fa fa-microphone" tapmode onclick="speak();"></div>
-                <div class="shit" tapmode onclick="dropping();">我要拉屎</div>
+                <div class="shit" tapmode onclick="dropping();">选择门店</div>
                 <div class="order" tapmode onclick="order();">预约</div>
             </div>
         </div>
@@ -123,16 +95,7 @@
         }else{
             closeSideNav();
         }
-        
-    }
 
-    function switchIt(type){
-        api.execScript({
-            frameName: 'main',
-            script: 'updateAnnotation('+ type +');'
-        });
-        $('#tab .active').removeClass('active');
-        $(event.target).addClass('active');
     }
 
     function dropping(){
@@ -145,7 +108,7 @@
 	        url: './html/win_dropping.html'
         });
     }
-    
+
     function order(){
     	api.openWin({
 	        name: 'win_order',
@@ -180,7 +143,7 @@
         });
 
         var header = $api.byId('header');
-        $api.fixIos7Bar(header); 
+        $api.fixIos7Bar(header);
         var headerPos = $api.offset(header);
         var main = $api.byId('main');
         var mainPos = $api.offset(main);

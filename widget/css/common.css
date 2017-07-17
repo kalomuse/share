@@ -17,21 +17,41 @@ html,body{
 }
 #header h1{
     position: relative;
-    text-indent: -9999px;
-    font-size: 20px; height: 44px; line-height: 44px; margin: 0em; 
-    background:url(../image/logo.png) no-repeat center;
+    font-size: 20px; height: 44px; line-height: 44px; margin: 0em;
     -webkit-background-size: 140px 28px;
     background-size:  140px 28px;
 }
 #header .logo{
-    position: absolute; left: 14px; bottom: 7px; 
+    position: absolute; left: 14px; bottom: 7px;
     background: url(../image/user.png) no-repeat center;
-    width: 30px; height: 30px; 
+    width: 30px; height: 30px;
     -webkit-background-size: contain;
     background-size:  contain;
 }
+#header .cancel {
+		position: absolute;
+		left: 10px;
+		bottom: 0;
+		width: 44px;
+		height: 44px;
+		font-size: 26px;
+}
+
+#header .cancel i {
+		border: 1px solid #e0e0e0;
+		color: #8c8c8c;
+		width: 30px;
+		height: 30px;
+		border-radius: 30px;
+		line-height: 30px;
+		text-align: center;
+}
+
+#header .cancel i.active {
+		background-color: #e6e6e6;
+}
 #main{
-    -webkit-box-flex: 1; 
+    -webkit-box-flex: 1;
     -webkit-flex: 1;
     flex: 1;
     padding: 2em;

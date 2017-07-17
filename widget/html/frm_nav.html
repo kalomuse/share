@@ -27,12 +27,12 @@
         .fix-wrap .logo-section img {height: 60px; margin: 20px 10px; vertical-align: top;}
         .fix-wrap .logo-section .user-info {position: absolute; left: 90px; top: 34px;}
         .fix-wrap .logo-section .user-info div {font-size: 14px;}
-        
+
         .fix-wrap .tool-section {margin-top: 20px;}
         .fix-wrap .tool-section .tool {height: 50px;line-height: 50px;}
         .fix-wrap .tool-section .tool .text {margin-left: 10px;color: #666;}
         .fix-wrap .tool-section .tool .fix-ico {height: 24px; margin-top: 12px; margin-left: 30px;vertical-align: top;}
-        
+
         .fix-wrap .tool-hover {background-color: #F0F0F0;}
 
     </style>
@@ -51,19 +51,13 @@
         <!-- 功能条 -->
         <div class="tool-section">
             <div class="tool" tapmode="tool-hover" onclick="">
-                <img src="../image/fix/menu_icn_order.png" alt="" class="fix-ico"><span class="text">我的行程</span>
+                <img src="../image/fix/menu_icn_order.png" alt="" class="fix-ico"><span class="text">我的订单</span>
             </div>
             <div class="tool" tapmode="tool-hover" onclick="">
                 <img src="../image/fix/menu_icn_wallet.png" alt="" class="fix-ico"><span class="text">我的钱包</span>
             </div>
-            <div class="tool bb" tapmode="tool-hover" onclick="">
-                <img src="../image/fix/menu_icn_message.png" alt="" class="fix-ico"><span class="text">消息中心</span>
-            </div>
             <div class="tool" tapmode="tool-hover" onclick="">
-                <img src="../image/fix/menu_icn_mall.png" alt="" class="fix-ico"><span class="text">积分商城</span>
-            </div>
-            <div class="tool bb" tapmode="tool-hover" onclick="">
-                <img src="../image/fix/menu_icn_invitation.png" alt="" class="fix-ico"><span class="text">推荐有奖</span>
+                <img src="../image/fix/menu_icn_message.png" alt="" class="fix-ico"><span class="text">消息中心</span>
             </div>
             <div class="tool" tapmode="tool-hover" onclick="">
                 <img src="../image/fix/menu_icn_setting.png" alt="" class="fix-ico"><span class="text">设置</span>
@@ -75,7 +69,7 @@
 <script type="text/javascript" src="../script/zepto.js"></script>
 <script type="text/javascript" src="../script/hammer.js"></script>
 <script type="text/javascript">
-	
+
 	$(document.body).on('touchend',function(e){
         var wrap = $api.dom('.fix-wrap');
         if(!$.contains(wrap, e.target)){
@@ -85,18 +79,18 @@
             });
         }
  });
-	
+
     apiready = function(){
         var header = $api.byId('logo-section');
         var header2 = $api.byId('user-info');
-        $api.fixIos7Bar(header); 
-        $api.fixIos7Bar(header2); 
+        $api.fixIos7Bar(header);
+        $api.fixIos7Bar(header2);
 
         var wrap = $api.dom('.fix-wrap');
         $api.addCls(wrap, 'in');
-	    
+
         $(wrap).on('webkitTransitionEnd, transitionend', function(){
-            
+
         });
 
         var hammertime = new Hammer(wrap, {
@@ -136,10 +130,10 @@
                         name: 'frm_nav'
                     });
                 },100);
-                
+
             }
         });
-        
+
     };
 
 </script>

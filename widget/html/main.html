@@ -14,7 +14,7 @@
 <script type="text/javascript" src="../script/api.js"></script>
 <script type="text/javascript">
 	var bMap;
-	
+
 	//设置气泡样式
 	// function setBubbleStyle(id){
 	// 	if(!id){return;}
@@ -37,120 +37,66 @@
 	        });
 		},500);
 	}
-	
-	//1:坐便式，2:蹲坑式
-	var toilet1 = [], toilet2 = [];
+
+	var toilet1 = [];
 	//id存起来
 	var annoId1 = [], annoId2 = [];
-	
+
 	function addAnnotation(annoArr, type){
 
 		for(var i=0, len=annoArr.length; i<len; i++){
     		var curAnno = annoArr[i];
-
-    		if(curAnno.title.indexOf('公共厕所') > -1 || curAnno.title.indexOf('公厕') > -1){
-    			toilet2.push(curAnno);
-    			annoId2.push(curAnno.id);
-			}else{
 				toilet1.push(curAnno);
 				annoId1.push(curAnno.id);
-			}
-    	}
+    }
 
-    	if(type == '1'){
-    		bMap.addAnnotations({
-			    annoArray: toilet1,
-			    pinImg: 'widget://image/toilet1.png'
-			},function(ret,err){
+		bMap.addAnnotations({
+	    annoArray: toilet1,
+	    //pinImg: 'widget://image/toilet2.png'
+	  },function(ret,err){
 				if(ret){
 					// alert(JSON.stringify(ret));
 
 					// var bubbleId = ret.pinId;
 					// setBubbleStyle(bubbleId);
-
 					openToilet();
-
 				}else{
 					// alert(JSON.stringify(err));
 				}
-			});
-    	}else if(type == '2'){
-    		bMap.addAnnotations({
-			    annoArray: toilet2,
-			    pinImg: 'widget://image/toilet2.png'
-			},function(ret,err){
-				if(ret){
-					// alert(JSON.stringify(ret));
+	  });
 
-					// var bubbleId = ret.pinId;
-					// setBubbleStyle(bubbleId);
-
-					openToilet();
-
-				}else{
-					// alert(JSON.stringify(err));
-				}
-			});
-    	}
-
-	}
+  }
 	//更新标注
 	function updateAnnotation(type){
-		if(type == '1'){
-			bMap.removeAnnotations({
-				idArray: annoId2
-			});
-    		bMap.addAnnotations({
-			    annoArray: toilet1,
-			    pinImg: 'widget://image/toilet1.png'
-			},function(ret,err){
-				if(ret){
-					// alert(JSON.stringify(ret));
+		bMap.removeAnnotations({
+			idArray: annoId2
+		});
+  	bMap.addAnnotations({
+		    annoArray: toilet1,
+		    pinImg: 'widget://image/toilet1.png'
+		},function(ret,err){
+			if(ret){
+				// alert(JSON.stringify(ret));
 
-					// var bubbleId = ret.pinId;
-					// setBubbleStyle(bubbleId);
+				// var bubbleId = ret.pinId;
+				// setBubbleStyle(bubbleId);
+				openToilet();
+			}else{
+				// alert(JSON.stringify(err));
+			}
+		});
 
-					openToilet();
-
-				}else{
-					// alert(JSON.stringify(err));
-				}
-			});
-    	}else if(type == '2'){
-    		bMap.removeAnnotations({
-				idArray: annoId1
-			});
-    		bMap.addAnnotations({
-			    annoArray: toilet2,
-			    pinImg: 'widget://image/toilet2.png'
-			},function(ret,err){
-				if(ret){
-					// alert(JSON.stringify(ret));
-
-					// var bubbleId = ret.pinId;
-					// setBubbleStyle(bubbleId);
-
-					openToilet();
-
-				}else{
-					// alert(JSON.stringify(err));
-				}
-			});
-    	}
 	}
 
-	function searchNearBy(lon, lat, type){
-		// alert('lon:'+ lon +'_lat:'+ lat);
-
+	function searchNearBy(lon, lat){
 		//找厕所
     	bMap.searchNearBy({
-		    key:'厕所',
+		    key:'洗浴',
 		    lon: lon,
 		    lat: lat,
 		    radius: 1000
 		},function(ret,err){
  		// alert(JSON.stringify(ret));
-
 		    if (ret.status){
 		    	// var total = ret.totalNum;
 		    	// var curNum = ret.curNum;
@@ -172,7 +118,7 @@
 
 		    	// alert(JSON.stringify(annoArr));
 
-		    	addAnnotation(annoArr, type);
+		    	addAnnotation(annoArr);
 
 		    } else{
 		        api.alert({title:'厕所去哪了', msg:err.msg});
@@ -181,8 +127,6 @@
 	}
 
 	function init(type){
-		type = type || 1;
-
     	// if(bMap){
     	// 	bMap.close();
     	// 	bMap = null;
@@ -190,7 +134,6 @@
 
 		bMap = api.require('baiduMap');
 		var y = api.pageParam.headerH;
-
 		//打开地图
 		bMap.open({
 		    x: 0,
@@ -200,57 +143,53 @@
 		},function(ret,err){
 		    if(ret){
 		    	// alert(JSON.stringify(ret));
-
 		    	bMap.showUserLocation({
-				    isShow:true,
-				    trackingMode:'none'
-				});
+				    isShow: true,
+				    trackingMode: 'none'
+				  });
 
 		    	//定位
 		    	bMap.startLocation({
 				    accuracy: '100m',
 				    filter:1,
 				    autoStop: true
-				},function(ret, err){
-					if(ret){
-						// alert(JSON.stringify(ret));
-
-						var sta = ret.status;
+				  },function(ret, err){
+					  if(ret){
+						  // alert(JSON.stringify(ret));
+						  var sta = ret.status;
 					    var lat = ret.lat;
 					    var lon = ret.lon;
 					    var t = ret.timestamp;
 
-						setTimeout(function(){
-							bMap.setZoomLevel({
-							    level: 16
-							});
-						},300);
+  						setTimeout(function(){
+  							bMap.setZoomLevel({
+  							    level: 16
+  							});
+  						},300);
 
 					    //定位中心
 					    bMap.setCenter({
 						    lon: lon,
 						    lat: lat
-						});
+						  });
 
 					    if(sta){
-					    	searchNearBy(lon, lat, type);
+					    	searchNearBy(lon, lat);
 					    } else{
 					        api.alert({title:'百度找不到你', msg:err.msg});
 					    }
-					}else{
-						// alert(JSON.stringify(err));
-					}
-				    
-				});
-
+  					}else{
+  						// alert(JSON.stringify(err));
+  					}
+			    });
 		    }else{
 		    	// alert(JSON.stringify(err));
 		    }
 		});
 	}
 
-    apiready = function(){
-		init(2);
-    };
+  apiready = function(){
+	  init();
+  };
 </script>
 </html>

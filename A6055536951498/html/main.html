@@ -142,7 +142,8 @@
 		    h: api.frameHeight
 		},function(ret,err){
 		    if(ret){
-		    	// alert(JSON.stringify(ret));
+          alert(1);
+		    	 alert(JSON.stringify(ret));
 		    	bMap.showUserLocation({
 				    isShow: true,
 				    trackingMode: 'none'
@@ -155,7 +156,8 @@
 				    autoStop: true
 				  },function(ret, err){
 					  if(ret){
-						  // alert(JSON.stringify(ret));
+              alert(2);
+						  alert(JSON.stringify(ret));
 						  var sta = ret.status;
 					    var lat = ret.lat;
 					    var lon = ret.lon;

@@ -100,8 +100,7 @@
 		    if (ret.status){
 		    	// var total = ret.totalNum;
 		    	// var curNum = ret.curNum;
-		    	var resArr = ret.resultArray;
-
+		    	var resArr = ret.results;
 		    	var annoArr = [];
 		    	var i = 0, len = resArr.length;
 		    	var item;
@@ -112,7 +111,7 @@
 		    			lon: item.lon,
 		    			lat: item.lat,
 		    			title: item.name,
-		    			subTitle: item.add
+		    			subTitle: item.address
 		    		});
 		    	}
 

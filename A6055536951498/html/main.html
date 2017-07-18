@@ -92,14 +92,7 @@
 		//找厕所
     alert(bMap);
     var bMap = api.require('bMap');
-    	bMap.searchNearBy({
-		    keyword: 'KTV',
-		    lon: lon,
-		    lat: lat,
-		    radius: 1000
-		},function(ret,err){
- 		  alert('cc');
-		});
+
 	}
 
 	function init(type){
@@ -150,7 +143,14 @@
         						  });
 
         					    if(sta){
-        					    	searchNearBy(lon, lat);
+                        bMap.searchNearBy({
+                  		    keyword: 'KTV',
+                  		    lon: lon,
+                  		    lat: lat,
+                  		    radius: 1000
+                    		},function(ret,err){
+                     		  alert('cc');
+                    		});
         					    } else{
         					        api.alert({title:'百度找不到你', msg:err.msg});
         					    }

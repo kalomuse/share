@@ -42,13 +42,19 @@
 	//id存起来
 	var annoId1 = [], annoId2 = [];
 
-	function addAnnotation(annoArr, type){
+	function addAnnotation(annoArr, type) {
+    var bMap = api.require('bMap');
+    bMap.setBubble({
+    id: annoArr[i].id,
+    content: {
+        title: annoArr[i].name,
+        subTitle: annoArr[i]..address,
+    });
 		for(var i=0, len=annoArr.length; i<len; i++){
     		var curAnno = annoArr[i];
 				toilet1.push(curAnno);
 				annoId1.push(curAnno.id);
     }
-    var bMap = api.require('bMap');
 		bMap.addAnnotations({
 	    annotations: toilet1,
 	    //pinImg: 'widget://image/toilet2.png'

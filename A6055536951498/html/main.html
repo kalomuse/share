@@ -43,14 +43,16 @@
 	var annoId1 = [], annoId2 = [];
 
 	function addAnnotation(annoArr, type){
+    alert(JSON.stringify(annoArr));
+  
 		for(var i=0, len=annoArr.length; i<len; i++){
     		var curAnno = annoArr[i];
 				toilet1.push(curAnno);
 				annoId1.push(curAnno.id);
     }
-    alert('dd');
+    var bMap = api.require('bMap');
 		bMap.addAnnotations({
-	    annoArray: toilet1,
+	    annotations: toilet1,
 	    //pinImg: 'widget://image/toilet2.png'
 	  },function(ret,err){
 				if(ret){
@@ -96,7 +98,6 @@
 	    lat: lat,
 	    radius: 1000
 		},function(ret,err){
-      alert(JSON.stringify(ret));
 		    if (ret.status){
 		    	// var total = ret.totalNum;
 		    	// var curNum = ret.curNum;
@@ -110,8 +111,8 @@
 		    			id: i,
 		    			lon: item.lon,
 		    			lat: item.lat,
-		    			title: item.name,
-		    			subTitle: item.address
+		    			//title: item.name,
+		    			//subTitle: item.address
 		    		});
 		    	}
 
@@ -120,7 +121,7 @@
 		    	addAnnotation(annoArr);
 
 		    } else{
-		        api.alert({title:'错误', msg:err.msg});
+		        api.alert({title:err.msg, msg:err.msg});
 		    }
 		});
 	}

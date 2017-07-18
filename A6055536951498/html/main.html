@@ -149,8 +149,41 @@
         				  });
 
         		    	//定位
-                  alert('b');
+                  alert('bb');
+        		    	bMap.getLocationLocation({
+        				    accuracy: '100m',
+        				    filter:1,
+        				    autoStop: true
+        				  },function(ret, err){
+                    alert('cc');
+        					  if(ret){
+        						  //alert(JSON.stringify(ret));
+        						  var sta = ret.status;
+        					    var lat = ret.lat;
+        					    var lon = ret.lon;
+        					    var t = ret.timestamp;
 
+          						setTimeout(function(){
+          							bMap.setZoomLevel({
+          							    level: 16
+          							});
+          						},300);
+
+        					    //定位中心
+        					    bMap.setCenter({
+        						    lon: lon,
+        						    lat: lat
+        						  });
+
+        					    if(sta){
+        					    	searchNearBy(lon, lat);
+        					    } else{
+        					        api.alert({title:'百度找不到你', msg:err.msg});
+        					    }
+          					}else{
+          						// alert(JSON.stringify(err));
+          					}
+        			    });
         		    }else{
         		    	// alert(JSON.stringify(err));
         		    }

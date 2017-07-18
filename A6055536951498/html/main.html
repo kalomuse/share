@@ -90,39 +90,15 @@
 
 	function searchNearBy(lon, lat){
 		//找厕所
+    alert(bMap);
+    var bMap = api.require('bMap');
     	bMap.searchNearBy({
 		    keyword: 'KTV',
 		    lon: lon,
 		    lat: lat,
 		    radius: 1000
 		},function(ret,err){
- 		    alert(JSON.stringify(ret));
-		    if (ret.status){
-		    	// var total = ret.totalNum;
-		    	// var curNum = ret.curNum;
-		    	var resArr = ret.resultArray;
-
-		    	var annoArr = [];
-		    	var i = 0, len = resArr.length;
-		    	var item;
-		    	for(i; i<len; i++){
-		    		item = resArr[i];
-	    			annoArr.push({
-		    			id: i,
-		    			lon: item.lon,
-		    			lat: item.lat,
-		    			title: item.name,
-		    			subTitle: item.add
-		    		});
-		    	}
-
-		    	alert(JSON.stringify(annoArr));
-
-		    	addAnnotation(annoArr);
-
-		    } else{
-		        api.alert({title:'厕所去哪了', msg:err.msg});
-		    }
+ 		  alert('cc');
 		});
 	}
 
@@ -131,7 +107,7 @@
     	// 	bMap.close();
     	// 	bMap = null;
     	// }
-      bMap = api.require('bMap');
+      var bMap = api.require('bMap');
       bMap.getLocationServices(function(ret, err) {
           if (ret.enable) {
             var y = api.pageParam.headerH;

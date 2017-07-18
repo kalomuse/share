@@ -89,6 +89,7 @@
 	}
 
 	function searchNearBy(lon, lat){
+    alert('ff');
 		//找厕所
     	bMap.searchNearBy({
 		    key:'洗浴',
@@ -96,7 +97,8 @@
 		    lat: lat,
 		    radius: 1000
 		},function(ret,err){
- 		    //alert(JSON.stringify(ret));
+
+ 		    alert(JSON.stringify(ret));
 		    if (ret.status){
 		    	// var total = ret.totalNum;
 		    	// var curNum = ret.curNum;

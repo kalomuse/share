@@ -135,6 +135,7 @@
       bMap.getLocationServices(function(ret, err) {
           if (ret.enable) {
             var y = api.pageParam.headerH;
+
         		//打开地图
         		bMap.open({
         		    x: 0,
@@ -150,7 +151,7 @@
 
         		    	//定位
                   alert('bb');
-        		    	bMap.getLocationLocation({
+        		    	bMap.getLocation({
         				    accuracy: '100m',
         				    filter:1,
         				    autoStop: true

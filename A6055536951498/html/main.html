@@ -132,12 +132,7 @@
     	// 	bMap = null;
     	// }
 
-		bMap = api.require('bMap');
-    bMap.initMapSDK(function(ret) {
-    if (ret.status) {
-        alert('地图初始化成功，可以从百度地图服务器检索信息了！');
-        }
-    });
+		bMap = api.require('baiduMap');
 		var y = api.pageParam.headerH;
 		//打开地图
 		bMap.open({
@@ -147,16 +142,21 @@
 		    h: api.frameHeight
 		},function(ret,err){
 		    if(ret){
+		    	bMap.showUserLocation({
+				    isShow: true,
+				    trackingMode: 'none'
+				  });
+
 		    	//定位
-          alert(1);
-		    	bMap.getLocation({
+          alert('b');
+		    	bMap.startLocation({
 				    accuracy: '100m',
 				    filter:1,
 				    autoStop: true
 				  },function(ret, err){
 					  if(ret){
-              alert(3);
-						  alert(JSON.stringify(ret));
+              alert(2);
+						  //alert(JSON.stringify(ret));
 						  var sta = ret.status;
 					    var lat = ret.lat;
 					    var lon = ret.lon;

@@ -25,7 +25,7 @@
 	<permission name="record" />
 	<permission name="location" />
 	<permission name="internet" />
-  <feature name="bMap">
+  <feature name="baiduMap">
       <param name="android_api_key" value="pibM1MPPE4pl5cFgNkBg9GNknNZ64M7k" />
       <param name="ios_api_key" value="hSxi06odifgIKb9xevxLzyO2R3sh05cP" />
   </feature>

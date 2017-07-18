@@ -43,8 +43,6 @@
 	var annoId1 = [], annoId2 = [];
 
 	function addAnnotation(annoArr, type){
-    alert(JSON.stringify(annoArr));
-  
 		for(var i=0, len=annoArr.length; i<len; i++){
     		var curAnno = annoArr[i];
 				toilet1.push(curAnno);
@@ -56,12 +54,11 @@
 	    //pinImg: 'widget://image/toilet2.png'
 	  },function(ret,err){
 				if(ret){
-          alert('ee');
 					// alert(JSON.stringify(ret));
 
 					// var bubbleId = ret.pinId;
 					// setBubbleStyle(bubbleId);
-					openToilet();
+					//openToilet();
 				}else{
 					// alert(JSON.stringify(err));
 				}
@@ -111,13 +108,10 @@
 		    			id: i,
 		    			lon: item.lon,
 		    			lat: item.lat,
-		    			//title: item.name,
-		    			//subTitle: item.address
+		    			title: item.name,
+		    			subTitle: item.address
 		    		});
 		    	}
-
-		    	alert(JSON.stringify(annoArr));
-
 		    	addAnnotation(annoArr);
 
 		    } else{
@@ -179,11 +173,11 @@
         					        api.alert({title:'百度找不到你', msg:err.msg});
         					    }
           					}else{
-          						// alert(JSON.stringify(err));
+          						   alert(JSON.stringify(err));
           					}
         			    });
         		    }else{
-        		    	// alert(JSON.stringify(err));
+        		    	  alert(JSON.stringify(err));
         		    }
         		});
           } else {

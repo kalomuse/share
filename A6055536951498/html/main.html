@@ -143,12 +143,12 @@
 		},function(ret,err){
 		    if(ret){
           alert(1);
-		    	 alert(JSON.stringify(ret));
+		    	//alert(JSON.stringify(ret));
 		    	bMap.showUserLocation({
 				    isShow: true,
 				    trackingMode: 'none'
 				  });
-
+        alert(2);
 		    	//定位
 		    	bMap.startLocation({
 				    accuracy: '100m',
@@ -156,7 +156,7 @@
 				    autoStop: true
 				  },function(ret, err){
 					  if(ret){
-              alert(2);
+              alert(3);
 						  alert(JSON.stringify(ret));
 						  var sta = ret.status;
 					    var lat = ret.lat;

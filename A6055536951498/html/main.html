@@ -134,6 +134,7 @@
       var bMap = api.require('bMap');
       bMap.getLocationServices(function(ret, err) {
           if (ret.enable) {
+            alert(JSON.stringify(ret));
             var y = api.pageParam.headerH;
 
         		//打开地图

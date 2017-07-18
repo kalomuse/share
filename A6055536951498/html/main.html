@@ -131,73 +131,35 @@
     	// 	bMap.close();
     	// 	bMap = null;
     	// }
-      alert('bb');
       var bMap = api.require('bMap');
       bMap.getLocationServices(function(ret, err) {
           if (ret.enable) {
-              alert(JSON.stringify(ret));
+            var y = api.pageParam.headerH;
+        		//打开地图
+        		bMap.open({
+        		    x: 0,
+        		    y: y,
+        		    w: api.frameWidth,
+        		    h: api.frameHeight
+        		},function(ret,err){
+        		    if(ret){
+        		    	bMap.showUserLocation({
+        				    isShow: true,
+        				    trackingMode: 'none'
+        				  });
+
+        		    	//定位
+                  alert('b');
+
+        		    }else{
+        		    	// alert(JSON.stringify(err));
+        		    }
+        		});
           } else {
               alert("未开启定位功能！");
           }
       });
-      alert('cc');
-      return;
-		var y = api.pageParam.headerH;
-		//打开地图
-		bMap.open({
-		    x: 0,
-		    y: y,
-		    w: api.frameWidth,
-		    h: api.frameHeight
-		},function(ret,err){
-		    if(ret){
-		    	bMap.showUserLocation({
-				    isShow: true,
-				    trackingMode: 'none'
-				  });
 
-		    	//定位
-          alert('b');
-		    	bMap.startLocation({
-				    accuracy: '100m',
-				    filter:1,
-				    autoStop: true
-				  },function(ret, err){
-            alert('cc');
-            alert(JSON.stringify(err));
-            alert(JSON.stringify(ret));
-					  if(ret){
-						  //alert(JSON.stringify(ret));
-						  var sta = ret.status;
-					    var lat = ret.lat;
-					    var lon = ret.lon;
-					    var t = ret.timestamp;
-
-  						setTimeout(function(){
-  							bMap.setZoomLevel({
-  							    level: 16
-  							});
-  						},300);
-
-					    //定位中心
-					    bMap.setCenter({
-						    lon: lon,
-						    lat: lat
-						  });
-
-					    if(sta){
-					    	searchNearBy(lon, lat);
-					    } else{
-					        api.alert({title:'百度找不到你', msg:err.msg});
-					    }
-  					}else{
-  						// alert(JSON.stringify(err));
-  					}
-			    });
-		    }else{
-		    	// alert(JSON.stringify(err));
-		    }
-		});
 	}
 
   apiready = function(){

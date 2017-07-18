@@ -133,7 +133,7 @@
     	// 	bMap.close();
     	// 	bMap = null;
     	// }
-      var bMap = api.require('bMap');
+      bMap = api.require('bMap');
       bMap.getLocationServices(function(ret, err) {
           if (ret.enable) {
             var y = api.pageParam.headerH;

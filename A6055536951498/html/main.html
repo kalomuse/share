@@ -143,16 +143,19 @@
         						  });
 
         					    if(sta){
-                        alert(lon);
-                        alert(lat);
-                        bMap.searchNearBy({
-                  		    keyword: '厕所',
-                  		    lon: lon,
-                  		    lat: lat,
-                  		    radius: 1000
-                    		},function(ret,err){
-                     		  alert('cc');
-                    		});
+                        alert(bMap);
+                        bMap.searchNearby({
+                            keyword: '厕所',
+                            lon: lon,
+                            lat: lat,
+                            radius: 1000
+                        }, function(ret, err) {
+                          if (ret.status) {
+                              alert(JSON.stringify(ret));
+                          } else {
+                              alert(JSON.stringify(err));
+                          }
+                        });
         					    } else{
         					        api.alert({title:'百度找不到你', msg:err.msg});
         					    }

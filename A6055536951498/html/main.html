@@ -43,18 +43,18 @@
 	var annoId1 = [], annoId2 = [];
 
 	function addAnnotation(annoArr, type){
-
 		for(var i=0, len=annoArr.length; i<len; i++){
     		var curAnno = annoArr[i];
 				toilet1.push(curAnno);
 				annoId1.push(curAnno.id);
     }
-
+    alert('dd');
 		bMap.addAnnotations({
 	    annoArray: toilet1,
 	    //pinImg: 'widget://image/toilet2.png'
 	  },function(ret,err){
 				if(ret){
+          alert('ee');
 					// alert(JSON.stringify(ret));
 
 					// var bubbleId = ret.pinId;
@@ -96,7 +96,7 @@
 		    lat: lat,
 		    radius: 1000
 		},function(ret,err){
- 		// alert(JSON.stringify(ret));
+ 		    //alert(JSON.stringify(ret));
 		    if (ret.status){
 		    	// var total = ret.totalNum;
 		    	// var curNum = ret.curNum;
@@ -116,7 +116,7 @@
 		    		});
 		    	}
 
-		    	// alert(JSON.stringify(annoArr));
+		    	alert(JSON.stringify(annoArr));
 
 		    	addAnnotation(annoArr);
 
@@ -134,9 +134,7 @@
       var bMap = api.require('bMap');
       bMap.getLocationServices(function(ret, err) {
           if (ret.enable) {
-            alert(JSON.stringify(ret));
             var y = api.pageParam.headerH;
-
         		//打开地图
         		bMap.open({
         		    x: 0,
@@ -151,13 +149,11 @@
         				  });
 
         		    	//定位
-                  alert('bb');
         		    	bMap.getLocation({
         				    accuracy: '100m',
         				    filter:1,
         				    autoStop: true
         				  },function(ret, err){
-                    alert('cc');
         					  if(ret){
         						  //alert(JSON.stringify(ret));
         						  var sta = ret.status;

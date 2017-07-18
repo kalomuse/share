@@ -89,10 +89,40 @@
 	}
 
 	function searchNearBy(lon, lat){
-		//找厕所
-    alert(bMap);
-    var bMap = api.require('bMap');
+		var bMap = api.require('bMap');
+  	bMap.searchNearby({
+	    keyword: 'KTV',
+	    lon: lon,
+	    lat: lat,
+	    radius: 1000
+		},function(ret,err){
+		    if (ret.status){
+		    	// var total = ret.totalNum;
+		    	// var curNum = ret.curNum;
+		    	var resArr = ret.resultArray;
 
+		    	var annoArr = [];
+		    	var i = 0, len = resArr.length;
+		    	var item;
+		    	for(i; i<len; i++){
+		    		item = resArr[i];
+	    			annoArr.push({
+		    			id: i,
+		    			lon: item.lon,
+		    			lat: item.lat,
+		    			title: item.name,
+		    			subTitle: item.add
+		    		});
+		    	}
+
+		    	alert(JSON.stringify(annoArr));
+
+		    	addAnnotation(annoArr);
+
+		    } else{
+		        api.alert({title:'错误', msg:err.msg});
+		    }
+		});
 	}
 
 	function init(type){
@@ -143,19 +173,7 @@
         						  });
 
         					    if(sta){
-                        alert(bMap);
-                        bMap.searchNearby({
-                            keyword: '厕所',
-                            lon: lon,
-                            lat: lat,
-                            radius: 1000
-                        }, function(ret, err) {
-                          if (ret.status) {
-                              alert(JSON.stringify(ret));
-                          } else {
-                              alert(JSON.stringify(err));
-                          }
-                        });
+        					    	searchNearBy(lon, lat);
         					    } else{
         					        api.alert({title:'百度找不到你', msg:err.msg});
         					    }

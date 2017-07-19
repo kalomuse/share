@@ -40,12 +40,13 @@
 
 	var toilet1 = [];
 	//id存起来
-	var annoId1 = [], annoId2 = [];
+	var annoId1 = [];
+  var mark = [];
 
 	function addAnnotation(annoArr, type) {
     var bMap = api.require('bMap');
 		for(var i=0, len=annoArr.length; i<len; i++) {
-        var mark = {
+        mark.push({
           id: annoArr[i].id,
           content: {
               title: annoArr[i].title,
@@ -54,24 +55,24 @@
           styles: {
 
           }
-        };
-        alert(JSON.stringify(mark));
-        bMap.setBubble(mark, function(ret) {
-          if (ret) {
-              alert(JSON.stringify(ret));
-          }
         });
-
     		var curAnno = annoArr[i];
 				toilet1.push(curAnno);
 				annoId1.push(curAnno.id);
-
     }
 		bMap.addAnnotations({
 	    annotations: toilet1,
 	    //pinImg: 'widget://image/toilet2.png'
 	  },function(ret,err){
 				if(ret){
+          for(var i in mark) {
+            alert(JSON.stringify(mark[i]));
+            bMap.setBubble(mark[i], function(ret) {
+                if (ret) {
+                    alert(JSON.stringify(ret));
+                }
+            });
+          }
 					// alert(JSON.stringify(ret));
 
 					// var bubbleId = ret.pinId;

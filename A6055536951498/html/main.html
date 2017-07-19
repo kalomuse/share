@@ -66,9 +66,12 @@
 	  },function(ret,err){
 				if(ret){
           for(var i in mark) {
-            bMap.setBubble(mark[i]);
+            bMap.setBubble(mark[i], function(ret) {
+                if (ret) {
+                    alert(JSON.stringify(ret));
+                }
+            });
           }
-					// alert(JSON.stringify(ret));
 
 					// var bubbleId = ret.pinId;
 					// setBubbleStyle(bubbleId);

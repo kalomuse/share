@@ -50,15 +50,18 @@
           content: {
               title: annoArr[i].title,
               subTitle: annoArr[i].subTitle,
+          },
+          styles: {
+
           }
         };
-
+        alert(JSON.stringify(mark));
         bMap.setBubble(mark, function(ret) {
           if (ret) {
               alert(JSON.stringify(ret));
           }
         });
-        
+
     		var curAnno = annoArr[i];
 				toilet1.push(curAnno);
 				annoId1.push(curAnno.id);

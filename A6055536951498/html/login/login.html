@@ -1,0 +1,66 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <title>Hello APP</title>
+    <link rel="stylesheet" type="text/css" href="../../css/api.css" />
+  	<link rel="stylesheet" type="text/css" href="../../css/common.css" />
+  	<link rel="stylesheet" type="text/css" href="../../css/fonts/css/font-awesome.min.css" />
+    <link rel="stylesheet" type="text/css" href="../../css/login/login.css" />
+</head>
+<body>
+  <div id="header">
+		<h1>
+			<span class="cancel" tapmode="active" onclick="api.closeWin();">
+				<i class="fa fa-angle-left"></i>
+			</span>
+			登 录
+		</h1>
+  </div>
+
+    <div class="denglu">
+        <form action="" method="post">
+            <div class="Login">
+                <dl>
+                    <dt>用户名：</dt>
+                    <dd><input type="text" name="username" id="username" placeholder="请输入邮箱/手机号" value="" /></dd>
+                </dl>
+                <dl style=" margin-top:15px;">
+                <dt>密码：</dt>
+                    <dd><input type="password" name="password" id="password" placeholder="密码"/></dd>
+                </dl>
+                <div class="field submit-btn">
+                    <input type="button" class="btn_big1" onClick="checkSubmit()"  value="登 录" />
+                    <input type="hidden" name="referurl" id="referurl" value="{$referurl}">
+                </div>
+            <div class="ng-foot">
+              <div class="ng-cookie-area" >
+                <label class="bf1 login_ffri">
+                    <input type="checkbox" name="remember" value="1" checked=""> &nbsp;自动登录
+                </label>
+              </div>
+              <div class="ng-link-area" >
+                <span style=" margin-right:5px; border-right:1px solid #eeeeee">
+                  <a  onclick="glo.open_frame({url: './reg.html'});">免费注册</a>
+                </span>
+                 <span class="user_line"></span>
+                   <span >
+                  <a onclick="glo.open_frame({url: '../user/forget_pwd.html'});">忘记密码？</a>
+                </span>
+              </div>
+              <div class="third-area ">
+                <div class="third-area-a">第三方登录</div>
+                      <a class="ta-qq" onclick="authQQ()" title="QQ"></a>
+                      <a class="ta-weixin" onclick="authWX()" title="weixin"></a>
+              </div>
+            </div>
+          </div>
+        </form>
+    </div>
+</body>
+<script type="text/javascript" src="./script/api.js"></script>
+<script type="text/javascript">
+
+</script>
+</html>

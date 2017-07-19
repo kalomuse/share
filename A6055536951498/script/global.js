@@ -29,6 +29,31 @@ var glo = {
       api.openFrame(pageList[index]);
     }
   },
+  open_win: function(pageList){
+    if(!$.isArray(pageList))
+      pageList = [pageList];
+
+    for(index in pageList) {
+      var url = pageList[index].url;
+      if(!url) {
+        continue;
+      }
+
+      var arr = url.split('/');
+      var name = arr[arr.length - 1].split('.')[0];
+      if(!arr[arr.length - 2]) {
+        alert('url不规范');
+        return;
+      } else if(arr[arr.length - 2] && arr[arr.length - 2] == '.') {
+        var href = location.href.split('/');
+        name = href[href.length - 2] + '_' + name;
+      } else {
+        name = arr[arr.length - 2] + '_' + name;
+      }
+      pageList[index].name = name;
+      api.openWin(pageList[index]);
+    }
+  },
   get: function(url, callback) {
     var url_split = url.split(website);
     if(!url_split[1]) {
@@ -56,32 +81,14 @@ var glo = {
     url = addParama(url, 'device_code', '1');
     $api.post(url, {values: data}, callback);
   },
-  check_login_2: function(redirect, callback) {
-    var self = this;
-    if($api.getStorage('token')) {
-      this.get('/mobile/common/check_login', function(res) {
-        if(res.status) {
-          callback();
-        } else {
-          return self.open_frame({url:'../user/login.html', pageParam: {'from': redirect}});
-        }
-      });
-    } else {
-      return self.open_frame({url:'../user/login.html', pageParam: {'from': redirect}});
-    }
-  },
+
   check_login: function(redirect) {
     var self = this;
     if($api.getStorage('token')) {
-      this.get('/mobile/common/check_login', function(res) {
-        if(res.status) {
-          return self.open_frame(redirect);
-        } else {
-          return self.open_frame({url:'../user/login.html', pageParam: {'from': redirect}});
-        }
-      });
+        return true;
     } else {
-      self.open_frame({url:'../user/login.html', pageParam: {'from': redirect}});
+      self.open_win({url:'html/login/login.html', pageParam: {'from': redirect}});
+      return false;
     }
 
   },

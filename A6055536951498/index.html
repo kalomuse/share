@@ -68,6 +68,7 @@
 </body>
 <script type="text/javascript" src="./script/api.js"></script>
 <script type="text/javascript" src="./script/zepto.js"></script>
+<script type="text/javascript" src="./script/global.js"></script>
 <script type="text/javascript">
     var sideNavOpened = false;
     function closeSideNav(){
@@ -77,6 +78,8 @@
         }
     }
     function openSideNav(){
+        if(!glo.check_login())
+          return false;
         if(!sideNavOpened){
             api.openFrame({
                 name: 'frm_nav',
@@ -143,7 +146,6 @@
         });
 
         var header = $api.byId('header');
-        $api.fixIos7Bar(header);
         var headerPos = $api.offset(header);
         var main = $api.byId('main');
         var mainPos = $api.offset(main);

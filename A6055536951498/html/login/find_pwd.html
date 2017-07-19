@@ -1,0 +1,157 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <title>Hello APP</title>
+    <link rel="stylesheet" type="text/css" href="../../css/api.css" />
+    <link rel="stylesheet" type="text/css" href="../../css/common.css" />
+    <link rel="stylesheet" type="text/css" href="../../css/fonts/css/font-awesome.min.css" />
+    <link rel="stylesheet" type="text/css" href="../../css/login/login.css" />
+</head>
+<body>
+  <div id="header">
+    <h1>
+      <span class="cancel" tapmode="active" onclick="api.closeWin();">
+        <i class="fa fa-angle-left"></i>
+      </span>
+      找回密码
+    </h1>
+  </div>
+<div id="tbh5v0">
+    <div class="find" style="padding-top:20px;">
+    <section class="innercontent">
+    <form action="" method="post" id="fpForm" name="fpForm" class="c-form login-form">
+            <div class="item validate_type">
+                <label style=" font-size:16px;">请选择验证身份方式：</label>
+                <select id="validate_type" name="validate_type"  class="select">
+                </select>
+            </div>
+            <div class="v_mobile v_item">
+                    <label style="font-size:14px;">手机号：</label>
+                    <span id="l_mobile_phone" style="font-size:14px;"></span>
+            </div>
+            <div id="c_mobile_code" class="field auth-code v_item v_mobile">
+                <div class="codeTxt">
+                    <input type="text" id="mobile_code" name="mobile_code" placeholder="手机验证码" class="hq_phone" />
+                </div>
+                <input id="zphone" type="button" value="获取手机验证码" class="m_phone" style="color:#FFF;"/>
+            </div>
+            <div class="email v_email v_item" style="display: none">
+                    <label>邮箱：</label>
+                    <span id="l_email"></span>
+            </div>
+
+            <div id="c_email_code" class=" v_item v_email" style="display: none">
+                <div class="codeTxt">
+                    <input type="text" id="email_code" name="email_code" class="hq_phone" value="" />
+                </div>
+                <input id="zemail" type="button" value="获取邮箱验证码" class="m_phone" style=" color:#FFF">
+            </div>
+            <div class="submit-btn " style=" padding-top:40px;">
+                <input type="button" name="button" id="btn_submit" class="btn_big1" value="提 交" />
+            </div>
+    </form>
+   </section>
+</div>
+</div>
+<script type="text/javascript" src="../../script/api.js"></script>
+<script type="text/javascript" src="../../static/js/jquery.js"></script>
+<script type="text/javascript" src="../../script/global.js"></script>
+<script type="text/javascript">
+function show_validate_type(validate_type_obj){
+    var type = $(validate_type_obj).val();
+    var value = $("#validate_type_"+type).attr("val");
+    $("#l_"+type).html(value);
+    $(".v_item").hide();
+    $(".v_"+type).show();
+}
+
+function sendcode(o){
+    var type = $("#validate_type").val();
+    var send = $("#validate_type_"+type).attr("val");
+    glo.post('/Home/Api/send_validate_code?device=1&t='+Math.random(), {type:type,send:send,scene:2}, function(res){
+        if(res.status==1){
+            layer.open({content:res.msg,time:1});
+            countdown(o);
+        }else{
+            layer.open({content:res.msg,time:2});
+        }
+    })
+}
+
+apiready = function() {
+  var pageParam = api.pageParam;
+  if(pageParam.field == 'mobile') {
+    $('#l_mobile_phone').text(pageParam.username);
+    $('#validate_type').append('<option id="validate_type_mobile" value="mobile" val="' + pageParam.username + '">手机</option>');
+  } else {
+    $('#l_email').text(pageParam.username);
+    $('#validate_type').append('<option id="validate_type_email" value="email" val="' + pageParam.username + '">邮箱</option>');
+  }
+  $('.validate_type').hide();
+    show_validate_type($("#validate_type"));
+
+    $("#validate_type").change(function(){
+        show_validate_type($(this));
+    });
+
+    $("#zphone").click(function(){
+        sendcode($(this));
+    });
+
+    $("#zemail").click(function(){
+        sendcode($(this));
+    });
+
+    $("#btn_submit").click(function(){
+        var type = $("#validate_type").val();
+        var send = $("#validate_type_"+type).attr("val");
+        if(type == 'mobile'){
+            if($("#mobile_code").val().length == 0){
+                $("#mobile_code").focus();
+                alert("验证码不能为空！");
+                return false;
+            }
+            tpcode = $("#mobile_code").val();
+        }else if(type == 'email'){
+            if($("#email_code").val().length == 0){
+                $("#email_code").focus();
+                alert("验证码不能为空！");
+                return false;
+            }
+            tpcode = $("#email_code").val();
+        }
+        var timestamp = Date.parse( new Date());
+        glo.post('/Home/Api/check_validate_code?t=' + Math.random(), {timestamp:timestamp, code:tpcode,send:send,type:type,scene:2}, function(res){
+            if(res.status==1){
+                glo.open_frame({url: './set_pwd.html'});
+            }else{
+                layer.open({content:res.msg,time:2});
+            }
+        });
+    });
+};
+
+var wait = 150;
+function countdown(obj, msg) {
+    obj = $(obj);
+    if (wait == 0) {
+        obj.removeAttr("disabled");
+        obj.val(msg);
+        wait = 150;
+    } else {
+        if (msg == undefined || msg == null) {
+            msg = obj.val();
+        }
+        obj.attr("disabled", "disabled");
+        obj.val(wait + "秒后重新获取");
+        wait--;
+        setTimeout(function() {
+            countdown(obj, msg)
+        }, 1000)
+    }
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,83 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <title>Hello APP</title>
+    <link rel="stylesheet" type="text/css" href="../../css/api.css" />
+    <link rel="stylesheet" type="text/css" href="../../css/common.css" />
+    <link rel="stylesheet" type="text/css" href="../../css/fonts/css/font-awesome.min.css" />
+    <link rel="stylesheet" type="text/css" href="../../css/login/login.css" />
+</head>
+<body>
+  <div id="header">
+    <h1>
+      <span class="cancel" tapmode="active" onclick="api.closeWin();">
+        <i class="fa fa-angle-left"></i>
+      </span>
+      找回密码
+    </h1>
+  </div>
+<div id="tbh5v0">
+    <div class="find">
+    <section class="innercontent">
+        <div class="find_box_end" style="display:none">
+                <p>新密码设置成功！</p>
+                <p>请您牢记新密码！</p>
+                <p class="on_go">
+                    <a href="{:U('User/login')}" title="立即登陆" class="btn_big1" style=" color:#FFF">立即登录&gt;&gt;</a>
+                </p>
+        </div>
+        <div id="formPassword" name="formPassword" style="display:none">
+            <div class="field pwd" style=" margin-top:20px">
+                <input name="password" id="password" type="password" placeholder="请输入密码" class="c-form-txt-normal" />
+            </div>
+            <div class="field pwd">
+                <input name="password2" id="comfirm_password" type="password" placeholder="请再次确认密码" class="c-form-txt-normal" />
+            </div>
+            <div class="submit-btn">
+                <input type="button" id="btn_submit" name="btn_submit" class="btn_big1" value="提 交" onClick="submit()"/>
+            </div>
+        </div>
+    </section>
+    <script type="text/javascript" src="../../script/api.js"></script>
+    <script type="text/javascript" src="../../static/js/jquery.js"></script>
+    <script type="text/javascript" src="../../script/global.js"></script>
+<script type="text/javascript">
+apiready = function() {
+  $('#formPassword').show();
+}
+
+function submit() {
+    var new_password = $('#password').val();
+    var confirm_password = $('#comfirm_password').val();
+    if(new_password == '' || confirm_password == ''){
+        layer.open({content:'密码不能为空',time:2});
+        return false;
+    }else if(new_password.length<6 || confirm_password.length<6){
+        layer.open({content:'密码长度不能少于6位',time:2});
+        return false;
+    }else if(new_password != confirm_password){
+        layer.open({content:'两次密码输入不一致',time:2});
+        return false;
+    }else{
+      data = {
+        'password': new_password,
+        'password2': confirm_password,
+      }
+      glo.post('/mobile/user/set_pwd', data, function(res) {
+        if(res.status == 1) {
+          alert(res.msg);
+          glo.open_frame({url:'./login.html'});
+        } else {
+          alert(res.msg);
+        }
+      });
+    }
+  }
+
+</script>
+</div>
+</div>
+</body>
+</html>

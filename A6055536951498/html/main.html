@@ -62,7 +62,6 @@
     }
 		bMap.addAnnotations({
 	    annotations: toilet1,
-	    //pinImg: 'widget://image/toilet2.png'
 	  },function(ret,err){
 				if(ret){
           map.popupBubble({
@@ -92,13 +91,9 @@
 		    pinImg: 'widget://image/toilet1.png'
 		},function(ret,err){
 			if(ret){
-				// alert(JSON.stringify(ret));
 
-				// var bubbleId = ret.pinId;
-				// setBubbleStyle(bubbleId);
-				openToilet();
 			}else{
-				// alert(JSON.stringify(err));
+			  alert(JSON.stringify(err));
 			}
 		});
 
@@ -151,7 +146,7 @@
         		    x: 0,
         		    y: y,
         		    w: api.frameWidth,
-        		    h: api.frameHeight
+        		    h: 200
         		},function(ret,err){
         		    if(ret){
         		    	bMap.showUserLocation({

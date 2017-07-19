@@ -52,11 +52,12 @@
               subTitle: annoArr[i].address,
           }
         };
-        alert(JSON.stringify(cc));
+        alert(JSON.stringify(mark));
+        //bMap.setBubble(mark);
     		var curAnno = annoArr[i];
 				toilet1.push(curAnno);
 				annoId1.push(curAnno.id);
-        bMap.setBubble(mark);
+
     }
 		bMap.addAnnotations({
 	    annotations: toilet1,

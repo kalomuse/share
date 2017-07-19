@@ -66,11 +66,7 @@
 	  },function(ret,err){
 				if(ret){
           for(var i in mark) {
-            bMap.setBubble(mark[i], function(ret) {
-                if (ret) {
-                    alert(i);
-                }
-            });
+            bMap.setBubble(mark[i]);
           }
 					// alert(JSON.stringify(ret));
 

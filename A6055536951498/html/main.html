@@ -65,15 +65,9 @@
 	    //pinImg: 'widget://image/toilet2.png'
 	  },function(ret,err){
 				if(ret){
-          for(var i in mark) {
-            alert(JSON.stringify(mark[i]));
-            bMap.setBubble(mark[i], function(ret) {
-                if (ret) {
-                    alert(JSON.stringify(ret));
-                }
-            });
-          }
-
+          map.popupBubble({
+              id: ret.pinId
+          });
 					// var bubbleId = ret.pinId;
 					// setBubbleStyle(bubbleId);
 					//openToilet();
@@ -81,6 +75,13 @@
 				  alert(JSON.stringify(err));
 				}
 	  });
+    for(var i in mark) {
+      bMap.setBubble(mark[i], function(ret) {
+          if (ret) {
+              alert(JSON.stringify(ret));
+          }
+      });
+    }
 
   }
 	//更新标注

@@ -45,24 +45,18 @@
 	function addAnnotation(annoArr, type) {
     var bMap = api.require('bMap');
 		for(var i=0, len=annoArr.length; i<len; i++) {
-      var cc = {
-        id: annoArr[i].id,
-        content: {
-            title: annoArr[i].name,
-            subTitle: annoArr[i].address,
-        }
-      };
-      alert(JSON.stringify(cc));
-    		var curAnno = annoArr[i];
-				toilet1.push(curAnno);
-				annoId1.push(curAnno.id);
-        bMap.setBubble({
+        var mark = {
           id: annoArr[i].id,
           content: {
               title: annoArr[i].name,
               subTitle: annoArr[i].address,
           }
-        });
+        };
+        alert(JSON.stringify(cc));
+    		var curAnno = annoArr[i];
+				toilet1.push(curAnno);
+				annoId1.push(curAnno.id);
+        bMap.setBubble(mark);
     }
 		bMap.addAnnotations({
 	    annotations: toilet1,

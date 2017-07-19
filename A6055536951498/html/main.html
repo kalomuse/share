@@ -68,9 +68,6 @@
           map.popupBubble({
               id: ret.pinId
           });
-					// var bubbleId = ret.pinId;
-					// setBubbleStyle(bubbleId);
-					//openToilet();
 				}else{
 				  alert(JSON.stringify(err));
 				}
@@ -78,7 +75,10 @@
     for(var i in mark) {
       bMap.setBubble(mark[i], function(ret) {
           if (ret) {
-              alert(JSON.stringify(ret));
+            var id = ret.id;
+            alert(ret.id);
+            openToilet();
+
           }
       });
     }

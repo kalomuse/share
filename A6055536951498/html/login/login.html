@@ -59,8 +59,170 @@
         </form>
     </div>
 </body>
-<script type="text/javascript" src="./script/api.js"></script>
+<script type="text/javascript" src="../../script/api.js"></script>
+<script type="text/javascript" src="../../script/widget/jquery.js"></script>
+<script type="text/javascript" src="../../script/global.js"></script>
 <script type="text/javascript">
+apiready = function(){
 
+}
+function authQQ() {
+  api.showProgress({
+			style: 'default',
+			animationType: 'fade',
+			title: '',
+			text: '启动中...',
+			modal: false
+		});
+    setTimeout("glo.hide_progress()", 3000);
+  var qq = api.require('qq');
+  qq.login(function(res, err) {
+    if(res.status) {
+      api.hideProgress();
+      var open_id = res.openId;
+      qq.getUserInfo(function(ret, err) {
+				if (ret.status) {
+          var data = {
+            'oauth': 'qq',
+            'openid' : open_id,
+            'nickname': ret.info.nickname,
+            'head_pic': ret.info.figureurl_qq_2,
+          }
+          third_login(data);
+        }
+      });
+    }
+  });
+}
+//微信登录
+	function authWX() {
+    api.showProgress({
+      style: 'default',
+      animationType: 'fade',
+      title: '',
+      text: '启动中...',
+      modal: false
+    });
+		var wx = api.require('wx');
+		wx.auth({
+
+		}, function(ret, err) {
+      api.hideProgress();
+			if (ret) {
+				if (ret.status) {
+					var code = ret.code;
+          getToken(code);
+				} else {
+					api.toast({
+						msg: '错误',
+						duration: 2000,
+						location: 'middle'
+					});
+				}
+			} else {
+				switch(err.code) {
+					case -1:
+						api.toast({
+							msg: '未知错误',
+							duration: 2000,
+							location: 'middle'
+						});
+						break;
+					case 1:
+						api.toast({
+							msg: '用户取消',
+							duration: 2000,
+							location: 'middle'
+						});
+						break;
+					case 2:
+						api.toast({
+							msg: '用户拒绝授权',
+							duration: 2000,
+							location: 'middle'
+						});
+						break;
+					case 3:
+						api.toast({
+							msg: '当前设备未安装微信客户端',
+							duration: 2000,
+							location: 'middle'
+						});
+						break;
+				}
+			}
+		});
+	}
+
+  function third_login(data) {
+    glo.post('/mobile/user/third_login', data, function(res) {
+      if(res.status == 1) {
+        glo.set_loginInfo(res);
+      } else {
+        glo.echo(res.msg);
+      }
+    });
+  }
+
+function checkSubmit()
+{
+    var username = $.trim($('#username').val());
+    var password = $.trim($('#password').val());
+    var referurl = $('#referurl').val();
+    var verify_code = $.trim($('#verify_code').val());
+    if(username == ''){
+        glo.alert('用户名不能为空!');
+        return false;
+    }
+    if(!checkMobile(username) && !checkEmail(username)){
+        glo.alert('账号格式不匹配!');
+        return false;
+    }
+    if(password == ''){
+        glo.alert('密码不能为空!');
+        return false;
+    }
+
+    head_h = $api.getStorage('head_h');
+    main_h = $api.getStorage('main_h');
+    $('.btn_big1').val('登录中...');
+    glo.post('/mobile/user/do_login', {
+        'username': username,
+        'password': password,
+      }, function(res) {
+        if(res.status == 1) {
+          glo.set_loginInfo(res);
+          $('.btn_big1').val('登 录');
+          if(api.pageParam.from) {
+            return glo.open_frame(api.pageParam.from);
+          } else {
+            glo.echo('登录成功');
+          }
+        } else {
+          $('.btn_big1').val('登 录');
+          glo.echo(res.msg);
+        }
+      });
+
+}
+
+
+    function checkMobile(tel) {
+        var reg = /(^1[3|4|5|7|8][0-9]{9}$)/;
+        if (reg.test(tel)) {
+            return true;
+        }else{
+            return false;
+        };
+    }
+
+    function checkEmail(str){
+        var reg = /^([a-zA-Z0-9]+[_|\-|\.]?)*[a-zA-Z0-9]+@([a-zA-Z0-9]+[_|\-|\.]?)*[a-zA-Z0-9]+\.[a-zA-Z]{2,3}$/;
+        if(reg.test(str)){
+            return true;
+        }else{
+            return false;
+        }
+    }
 </script>
 </html>

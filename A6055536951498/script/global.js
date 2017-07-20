@@ -1,8 +1,12 @@
 
-var website = "http://shop.tikyy.com";
-//var website = "http://192.168.1.117:2080";
+//var website = "http://share.tikyy.com";
+var website = "http://192.168.1.112:7002";
 
 var glo = {
+  fix_header: function(name) {
+    var header = $api.dom(name);
+    $api.fixIos7Bar(header);
+  },
   open_frame: function(pageList){
     if(!$.isArray(pageList))
       pageList = [pageList];

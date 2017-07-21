@@ -29,6 +29,8 @@ html,body{
     background-size:  contain;
 }
 #header .cancel {
+    background: url(../image/arrow_left.png) no-repeat 15px center;
+    background-size: auto 16px;
 		position: absolute;
 		left: 10px;
 		bottom: 0;
@@ -55,4 +57,10 @@ html,body{
     -webkit-flex: 1;
     flex: 1;
     padding: 2em;
+}
+.flex{
+    display: -webkit-box;
+    display: -moz-box;
+    -moz-box-orient:horizontal;
+    -webkit-box-orient:horizontal;
 }

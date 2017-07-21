@@ -1,8 +1,12 @@
 
 //var website = "http://share.tikyy.com";
 var website = "http://192.168.1.112:7002";
+var website_zmz = "http://192.168.1.112:8010";
 
 var glo = {
+  init: function() {
+    this.fix_header();
+  },
   fix_header: function(name) {
     var header = $api.dom(name);
     $api.fixIos7Bar(header);

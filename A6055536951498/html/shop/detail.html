@@ -1,0 +1,834 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="format-detection" content="telephone=no">
+    <link rel="stylesheet" type="text/css" href="../../css/api.css" />
+    <link rel="stylesheet" type="text/css" href="../../css/common.css" />
+    <link rel="stylesheet" type="text/css" href="../../css/fonts/css/font-awesome.min.css" />
+    <link rel="stylesheet" type="text/css" href="../../css/shop.css" />
+    <title>门店详情</title>
+</head>
+<body>
+<header class="fixed">
+    <div class="headTab">
+        <div class="mainIcon back"></div>
+        <h2></h2>
+        <p id="share" data-stat="true" class="share"></p>
+        <p id='save'></p>
+    </div>
+</header>
+
+<div id="main" style="margin-top: 54px;"></div>
+
+<script type="text/javascript" src="../../script/jquery-2.1.1.js"></script>
+<script type="text/javascript" src="../../script/api.js"></script>
+<script type="text/javascript" src="../../script/deploy.js"></script>
+<script type="text/javascript">
+    apiready = function(){
+        //====================================
+        //是否登录判断
+        //====================================
+        var user = $api.getStorage('user');
+        var user_id = "", login_token = "";
+
+        if(user){
+            user_id = user.user_id;
+            login_token = user.login_token;
+        }
+
+        //定义一些全局变量
+        globeDefinition = {
+            screen_width: api.winWidth, //主窗口宽度
+            screen_height: api.winHeight,   //主窗口高度
+            company_id: api.pageParam.company_id,
+            from: api.pageParam.from,
+            user_id : api.pageParam.user_id,
+        }
+
+        var funList = {
+            init: function(){
+                funList.showProgress();
+                funList.initData();
+            },
+            initData: function(){
+                $api.get(basicDeploy.server_url+'/mobile/merchant/detail/'+globeDefinition.company_id +'?login_token='+login_token+'&zmz_source=apicloud', function(ret){
+                    if(ret.stat=="ok"){
+                        //公司详情基本信息
+
+                        var company = ret.company;
+                        $('.headTab h2').html(company.name);
+                        if(company.has_collection) {
+                        	$('#save').addClass('save_light');
+                        } else {
+                        	$('#save').addClass('save');
+                        }
+                        $('#save').attr('data-user_id', company.user_id);
+                        var html = $api.html($api.byId('J-model-company-detail'));
+                        html = funList.templates(html, company);
+                        $api.append($api.byId('main'), html);
+
+                        //装修直播列表数据
+                        var articles = ret.articles;
+                        var _id = company.id
+                        $.each(articles, function(i){
+                            var articles_html = $api.html($api.byId('J-model-articles'));
+                            articles_html = funList.templates_articles(articles_html, articles[i]);
+                            $api.append($api.dom('#M_article .m_article_list'), articles_html);
+                        });
+
+                        //最新作品
+                        var inspirations = ret.inspirations;
+                        $.each(inspirations, function(i){
+                            var inspirations_html = $api.html($api.byId('J-model-inspirations'));
+                            inspirations_html = funList.templates_inspirations(inspirations_html, inspirations[i]);
+                            $api.append($api.dom('#M_newestWorks .newestWorks_list'), inspirations_html);
+                        });
+
+                        //云端监理工程
+                        /*
+                        var projects = ret.projects;
+                        $.each(projects, function(i){
+                            var projects_html = $api.html($api.byId('J-model-projects'));
+                            projects_html = funList.templates_projects(projects_html, projects[i], company.id);
+                            $api.append($api.dom('#M_project .project'), projects_html);
+                        });
+                        */
+                        //产品列表
+                        var products = ret.products;
+                        $.each(products, function(i){
+                            var products_html = $('#J-model-products').html();
+                            products_html = funList.templates_products(products_html, products[i]);
+                            $('#M_project .project').append(products_html);
+                        })
+                    }else{
+                        api.toast({
+                            msg: ret.msg,
+                            duration:2000,
+                            location: 'middle'
+                        });
+                    }
+                    funList.hideProgress();
+                }, 'JSON');
+            },
+            templates: function(html, company){
+                //头部信息
+                html = html.replace("{{background_url}}", company.background_url);
+                html = html.replace("{{score}}", company.score!="" ? company.score: '');
+                html = html.replace("{{collection_count}}", company.collection_count);
+                html = html.replace("{{user_id}}", company.user_id);
+                html = html.replace("{{assess_count}}", company.assess_count);
+                html = html.replace("{{user_id}}", company.user_id);
+                html = html.replace("{{project_count}}", company.project_count);
+
+                html = html.replace("{{photo_url}}", company.photo_url);
+                html = html.replace("{{name}}", company.name);
+                html = html.replace("{{com_created}}", company.com_created!="" ? '<p class="years">'+company.com_created+'年老店</p>' : '');
+                html = html.replace("{{is_honesty}}", company.is_honesty ? '<p class="mainIcon d_tag">逾期赔付</p>' : '');
+                html = html.replace("{{is_quality}}", company.is_quality ? '<p class="mainIcon d_tag">云端监理</p>' : '');
+                html = html.replace("{{is_budget}}", company.is_budget ? '<p class="mainIcon d_tag">靠谱预算</p>' : '');
+                html = html.replace("{{is_display}}", company.has_signed ? '-webkit-box' : 'none');
+                html = html.replace("{{btn_bg_999}}", company.has_collection ? "btn_bg_999" : "");
+                html = html.replace("{{has_collection}}", company.has_collection);
+                html = html.replace("{{collect_name}}", company.has_collection ? "已收藏" : "收藏");
+                //html = html.replace("{{company_id}}", company.id);
+
+                //工程保修
+                html = html.replace("{{whole_project_years}}", company.whole_project_years);
+                html = html.replace("{{concealed_project_years}}", company.concealed_project_years);
+
+                //优惠和到店礼
+                html = html.replace("{{order_slogan}}", company.order_slogan);
+                html = html.replace("{{preferential_id}}", company.preferential_id!="" ? '/mobile/preferential/detail/'+company.preferential_id : 'javascript:;');
+                html = html.replace("{{company_id}}", company.id);
+                html = html.replace("{{preferential_title}}", company.preferential_title);
+
+                //装修直播、最新作品、云端监理工程
+                html = html.replace("{{company_id}}",company.id);
+                html = html.replace("{{article_count}}",company.article_count);
+                html = html.replace("{{user_id}}", company.user_id);
+                html = html.replace("{{product_count}}", company.product_count);
+                html = html.replace("{{user_id}}", company.user_id);
+                html = html.replace("{{project_count}}", company.project_count);
+
+                //评价
+                html = html.replace("{{user_id}}", company.user_id);
+                html = html.replace("{{user_id}}", company.user_id);
+                html = html.replace("{{assess_count}}", company.assess_count);
+                html = html.replace("{{display}}", company.assess_count==0 ? 'none' : 'block');
+                html = html.replace("{{user_photo}}", company.assess_total.user_photo);
+                html = html.replace("{{user_nick}}", company.assess_total.user_nick);
+                html = html.replace("{{construction}}", company.assess_total.construction);
+                html = html.replace("{{time}}", company.assess_total.time);
+                html = html.replace("{{budget}}", company.assess_total.budget);
+                html = html.replace("{{design}}", company.assess_total.design);
+                html = html.replace("{{desc}}", company.assess_total.desc);
+
+                //地址和电话
+                html = html.replace("{{address_link}}", company.address_link);
+                html = html.replace("{{address}}", company.address);
+                if(company.id == 442){
+                    html = html.replace("{{add2_visible}}", "visible");
+                }else{
+                    html = html.replace("{{add2_visible}}", "hidden");
+                }
+
+                var phone = '';
+                if(company.has_signed){
+                    if(company.phone.length>0) {
+                        $.each(company.phone, function (i) {
+                            phone += '<li>' +
+                                    '<a href="tel://' + company.phone[i] + '" class="box_link">' +
+                                    '<p class="mainIcon tel_mark"></p>' +
+                                    '<p class="word">' + company.phone[i] + '</p>' +
+                                    '</a>' +
+                                    '</li>';
+                        });
+                    }else{
+                        phone = '<li>' +
+                                '<a href="javascript:;" class="box_link">' +
+                                '<p class="mainIcon tel_mark"></p>' +
+                                '<p class="word">无</p>' +
+                                '</a>' +
+                                '</li>';
+                    }
+                    html = html.replace("{{phone}}", phone);
+                } else {
+                    html = html.replace("{{phone}}", '');
+                }
+
+                return html;
+            },
+            templates_articles: function(articles_html, articles){
+                articles_html = articles_html.replace("{{article_id}}", articles.id);
+                articles_html = articles_html.replace("{{user_photo}}", articles.user_photo);
+                articles_html = articles_html.replace("{{title}}", articles.title);
+                articles_html = articles_html.replace("{{stage_name}}", articles.stage_name);
+                articles_html = articles_html.replace("{{desc}}", articles.desc);
+
+                var w = (parseInt(globeDefinition.screen_width)-10)/3-10, imgs = '';
+                $.each(articles.imgs, function(k){
+                    if(articles.imgs[k]!="")
+                        imgs+='<img src="'+articles.imgs[k]+'" class="ma_descImg" style="width: '+w+'px; height: '+w+'px;" alt="">';
+                });
+                articles_html = articles_html.replace("{{imgs}}", imgs);
+                articles_html = articles_html.replace("{{view_times}}", articles.view_times);
+                articles_html = articles_html.replace("{{comments_count}}", articles.comments_count);
+                articles_html = articles_html.replace("{{gmt_modified}}", articles.gmt_modified);
+
+                return articles_html;
+            },
+            templates_inspirations: function(inspirations_html, inspirations){
+                var w_li = (parseInt(globeDefinition.screen_width)-10)/2-10;
+                inspirations_html = inspirations_html.replace("{{w_li}}", w_li);
+
+                inspirations_html = inspirations_html.replace("{{product_id}}", inspirations.product_id);
+                inspirations_html = inspirations_html.replace("{{title}}", inspirations.title);
+                inspirations_html = inspirations_html.replace("{{collection_count}}", inspirations.collection_count);
+
+                var w_img = ((parseInt(globeDefinition.screen_width)-10)/2-10-2)/ 2, imgs = "";
+                $.each(inspirations.images, function(k){
+                    if(inspirations.images[k]!="")
+                        imgs+= '<img src="'+inspirations.images[k]+'" class="nw_faceImg" style="width: '+w_img+'px; height: '+w_img+'px;" alt="">';
+                });
+                inspirations_html = inspirations_html.replace("{{imgs}}", imgs);
+
+                return inspirations_html;
+            },
+            templates_projects: function(projects_html, projects, company_id){
+                projects_html = projects_html.replace("{{user_id}}", projects.owner_user_id);
+                projects_html = projects_html.replace("{{photo}}", projects.photo);
+                projects_html = projects_html.replace("{{community}}", projects.community);
+                projects_html = projects_html.replace("{{stage_name}}", projects.stage_name);
+                projects_html = projects_html.replace("{{house_type_name}}", projects.house_type_name);
+                projects_html = projects_html.replace("{{design_style_name}}", projects.design_style_name);
+                projects_html = projects_html.replace('{{m2}}', projects.m2!="" ? '<span class="part_info_list_2">'+projects.m2 +' ㎡</span>' : '');
+                projects_html = projects_html.replace('{{construction_mode_name}}', projects.construction_mode_name!="" ? '<span class="part_info_list_2">'+projects.construction_mode_name+'</span>' : '');
+                projects_html = projects_html.replace('{{contract_money}}', projects.contract_money!="" ? '<span class="part_info_list_2">'+projects.contract_money+' 万</span>' : '');
+                projects_html = projects_html.replace('{{distance}}', projects.distance);
+                projects_html = projects_html.replace('{{last_modified_time}}', projects.last_modified_time);
+                projects_html = projects_html.replace('{{company_id}}', company_id);
+
+                if(projects.article_id!=""){
+                    var articleHtml = '<div onclick="openNewFrame(\'article_detail\', \'{{article_id}}\')" '+ ' class="lookDiary">' +
+                            '<div class="ckzb_border_l">' +
+                            '<p class="mainIcon lookDiaryBtn">查看直播</p>' +
+                            '</div>' +
+                            '</div>';
+                    articleHtml = articleHtml.replace('{{article_id}}', projects.article_id);
+                    projects_html = projects_html.replace('{{article}}',articleHtml);
+                }else{
+                    projects_html = projects_html.replace('{{article}}',"");
+                }
+
+                return projects_html;
+            },
+            templates_products: function(products_html, products) {
+
+                products_html = products_html.replace("{{product_id}}", products.id);
+                products_html = products_html.replace("{{product_name}}", products.name);
+                products_html = products_html.replace("{{product_image_url}}", products.img_url);
+                products_html = products_html.replace("{{product_old_price}}", products.old_price);
+                products_html = products_html.replace("{{product_new_price}}", products.new_price);
+                products_html = products_html.replace("{{product_buy_count}}", products.order_quantity);
+                return products_html;
+            },
+            showProgress: function(){
+                api.showProgress({
+                    style: 'default',
+                    animationType: 'zoom',
+                    title: '',
+                    text: '拼命的在加载...',
+                    modal: true
+                });
+            },
+            hideProgress: function(){
+                api.hideProgress();
+            }
+        }
+
+        //装修直播、最新作品、云端监理工程
+        $('#main').on('click', '.nav', function(){
+            var _self = $(this);
+            var id = _self.attr("data-id");
+            $('.nav').each(function(){
+                $(this).hasClass("nav_active") ? $(this).removeClass("nav_active") : "";
+            });
+            _self.addClass("nav_active");
+
+            $('.cd_tab_box').each(function(){
+                $(this).css("display", "none");
+            });
+
+            $('#'+id).css("display", "block");
+            $('#'+id+'_more').css("display", "block");
+        });
+
+        //收藏
+        $('#save').on('click', function(){
+            if(user){
+                funList.showProgress();
+                var _self = $(this);
+                var judge = _self.hasClass("save_light");
+                var user_id = _self.attr("data-user_id");
+                var data_list = new Object();
+                data_list.login_token = login_token;
+                if(!judge) {
+                    $api.post(basicDeploy.server_url+'/collection/company/'+user_id+'?zmz_source=apicloud', {
+                        body: $api.jsonToStr(data_list)
+                    }, function (ret) {
+                        if(ret.stat=="ok"){
+                            _self.removeClass('save').addClass('save_light');
+                        }else{
+                            api.toast({
+                                msg: ret.msg,
+                                duration:2000,
+                                location: 'middle'
+                            });
+                        }
+                        funList.hideProgress();
+                    }, 'JSON');
+                }else {
+                    $api.post(basicDeploy.server_url+'/collection/company/'+user_id+'/delete?zmz_source=apicloud', {
+                        body: $api.jsonToStr(data_list)
+                    }, function (ret) {
+                        if(ret.stat=="ok"){
+                        	_self.removeClass('save_light').addClass('save');
+                       	}else{
+                            api.toast({
+                                msg: ret.msg,
+                                duration:2000,
+                                location: 'middle'
+                            });
+                        }
+                        funList.hideProgress();
+                    }, 'JSON');
+                }
+            }else{
+                api.confirm({
+                    title: "提示",
+                    msg: "想要收藏的话,要先登录哦!",
+                    buttons: ["去登录","暂不收藏"]
+                },function(ret,err){
+                    if(ret.buttonIndex==1){
+                        api.openWin({
+                            name: 'login',
+                            url: '../common/login.html',
+                            bounces: false,
+                            delay:200,
+                            reload: true,
+                            pageParam: {from:'company_detail', to:'company_detail', company_id:api.pageParam.company_id}
+                        });
+                    }else if(ret.buttonIndex==2){
+                        return;
+                    }
+                });
+            }
+        });
+
+        $api.addEvt($api.dom('.back'), 'click', function(){
+        	var from = api.pageParam.from;
+            if (from == 'collection') {
+                api.openWin({
+                    name : 'myCollection',
+                    url : '../personal/myCollection.html',
+                    bounces : false,
+                    delay : 200,
+                    reload: true,
+                    pageParam : {
+                        user_id : globeDefinition.user_id
+                    }
+                });
+            }
+
+            api.closeWin({name:'company_detail'});
+        });
+
+        funList.init();
+    }
+
+    function openNewFrame(target, id){
+        var user = $api.getStorage('user');
+        var user_id = "", login_token = "";
+
+        if(user){
+            user_id = user.user_id;
+            login_token = user.login_token;
+        }
+
+        if(target == 'article_detail'){
+            api.openWin({
+                name: 'article_detail',
+                url: '../article/detail.html',
+                bounces: false,
+                delay:200,
+                reload:true,
+                pageParam: {article_id: id, from: "company_detail"}
+            });
+        } else if(target == 'all_article'){
+            api.openWin({
+                name: 'article',
+                url: '../article/index.html',
+                bounces: false,
+                delay:200,
+                reload:true,
+                pageParam: {company_id: id, from: "company_detail"}
+            });
+        } else if(target == 'all_pruduct'){
+            api.openWin({
+                name: 'case',
+                url: '../case/index.html',
+                bounces: false,
+                delay:200,
+                reload:true,
+                pageParam: {user_id: id, from: "company_detail"}
+            });
+        } else if(target == 'all_project'){
+            api.openWin({
+                name: 'all_project_index',
+                url: '../project/index.html',
+                bounces: false,
+                delay:200,
+                reload:true,
+                pageParam: {user_id: id, from: "company_detail"}
+            });
+
+        } else if(target == 'appraisal'){
+            api.openWin({
+                name: 'appraisal',
+                url: './appraisal.html',
+                bounces: false,
+                delay:200,
+                reload:true,
+                pageParam: {user_id: id}
+            });
+        }else if(target == 'reserve'){
+            api.openWin({
+                name: target,
+                url: '../common/reserve.html',
+                bounces: false,
+                delay:200,
+                reload:true,
+                pageParam: {from:'merchant', id: id}
+            });
+        }else if(target == 'user_other'){
+            if(user_id==id){
+                var url = '../personal/index.html';
+                api.openWin({
+	                name: 'userCenter',
+	                url: url,
+	                bounces: false,
+	                delay:200,
+	                reload:true,
+	                pageParam: {user_id: id}
+	            });
+            }else{
+                var url = '../personal/index_other.html';
+                api.openWin({
+	                name: 'userCenter_other',
+	                url: url,
+	                bounces: false,
+	                delay:200,
+	                reload:true,
+	                pageParam: {user_id: id}
+	            });
+            }
+
+        } else if(target == 'service_detail') {
+        	api.openWin({
+		        name: 'service_detail',
+		        url: '../service/detail.html',
+		        bounces: false,
+		        delay:200,
+		        reload:true,
+		        pageParam: {cate_id: id, from: 'company_detail', company_id: api.pageParam.company_id}
+		    });
+        }
+    }
+
+    function openNewFrame_2(target, product_id){
+        api.openWin({
+            name: 'case_detail',
+            url: '../case/detail.html',
+            bounces: false,
+            delay:200,
+            reload:true,
+            pageParam: {from:'merchant', product_id: product_id, company_id: globeDefinition.company_id}
+        });
+    }
+
+    function toReserve(preferential_id, company_id){
+        api.openWin({
+            name: 'reserve',
+            url: '../common/reserve.html',
+            bounces: false,
+            delay:200,
+            reload:true,
+            pageParam: {from:'preferential', preferential_id: preferential_id, company_id: company_id}
+        });
+    }
+
+    //=================================
+    //=====  分享组件的调用  ===============
+    //=================================
+    $api.addEvt($api.byId('share'), 'click', function() {
+       var stat = $api.attr($api.byId('share'), 'data-stat');
+       if(stat=="true"){
+            var shareBox = share();
+            $api.append($api.dom('body'), shareBox);
+            $api.attr($api.byId('share'), 'data-stat', 'false');
+        }else{
+            $('#shareBox').remove();
+            $api.attr($api.byId('share'), 'data-stat', 'true');
+        }
+    });
+    //分享(微信、微博、QQ)
+    function toShare(target){
+        var title = '装修就找“怎么装”';
+        var description = '装修就找“怎么装”，让装修简单一点！';
+        var contentUrl = 'http://m.zenmez.com/mobile/service_product/index/page';
+
+        if(target=="weixin_pyq" || target=="weixin_hh"){
+            var scene = (target=="weixin_pyq") ? 'timeline' : 'session';
+            var wx = api.require('wx');
+            wx.shareWebpage({
+                apiKey: 'wx4b4cdcee99da764e',
+                scene: scene,
+                title: title,
+                description: description,
+                thumb: 'widget://image/common/shareLogo.png',
+                contentUrl: contentUrl
+            }, function(ret, err){
+                if(ret.status){
+                	$api.get(basicDeploy.server_url + '/common/add_point/?share_type=diary&zmz_source=apicloud&login_token='+login_token);
+                    alert('分享成功，积分+1');
+                }else{
+                    switch(err.code){
+                        case -1:
+                            alertErr('未知错误！');
+                        break;
+                        case 1:
+                            alertErr('apiKey非法！');
+                        break;
+                        case 2:
+                            alertErr('用户取消！');
+                        break;
+                        case 3:
+                            alertErr('发送失败！');
+                        break;
+                        case 4:
+                            alertErr('授权拒绝！');
+                        break;
+                        case 5:
+                            alertErr('微信服务器返回的不支持错误！');
+                        break;
+                        case 6:
+                            alertErr('当前设备未安装微信客户端！');
+                        break;
+                        case 7:
+                            alertErr('注册SDK失败！');
+                        break;
+                    }
+                }
+            });
+        }else if(target=="weibo"){
+            var weibo = api.require('weibo');
+            weibo.shareWebPage({
+                text: '',
+                title: title,
+                description: description,
+                thumb: 'widget://image/common/shareLogo.png',
+                contentUrl: contentUrl
+            },function(ret,err){
+                if (ret.status) {
+                      alert('分享成功');
+                }else{
+                    switch(err.code){
+                        case -1:
+                            alertErr('apiKey 值非法！');
+                        break;
+                        case 1:
+                            alertErr('用户取消！');
+                        break;
+                        case 2:
+                            alertErr('发送失败！');
+                        break;
+                        case 3:
+                            alertErr('授权失败！');
+                        break;
+                        case 4:
+                            alertErr('不支持的请求！');
+                        break;
+                        case 5:
+                            alertErr('未知错误！');
+                        break;
+                    }
+                }
+            });
+        }else if(target=="qq" || target=="qZone"){
+        	var type = (target=="qq") ? 'QFriend' : 'QZone';
+            var obj = api.require('qq');
+            obj.shareNews({
+                url:contentUrl,
+                title:title,
+                description:description,
+                type: type,
+                imgUrl:'http://img.zenmez.com/static/wx_skin/images/common/shareLogo.png'
+            },function(ret,err){
+                if (ret.status) {
+                      alert('分享成功');
+                }else{
+                    alert(err.msg);
+                }
+            });
+        }
+    }
+</script>
+
+<script type="text/html" id="J-model-articles">
+    <li>
+        <div class="ma_link" onclick="openNewFrame('article_detail','{{article_id}}')">
+            <div class="ma_top_part flex">
+                <img src="{{user_photo}}" class="ma_head" alt="">
+                <p class="ma_title">{{title}}</p>
+                <p class="ma_step">{{stage_name}}</p>
+            </div>
+            <div class="ma_desc">{{desc}}</div>
+            <div class="ma_desc_img clearfix">
+                {{imgs}}
+            </div>
+            <div class="ma_data_part clearfix">
+                <p class="mainIcon ma_view">{{view_times}}</p>
+                <p class="mainIcon ma_comment">{{comments_count}}</p>
+                <p class="ma_time">{{gmt_modified}}</p>
+            </div>
+        </div>
+    </li>
+</script>
+
+<script type="text/html" id="J-model-inspirations">
+    <li style="width: {{w_li}}px;">
+        <div onclick="openNewFrame_2('inspirations_detail','{{product_id}}')" class="nw_link">
+            <p class="nw_title">{{title}}</p>
+            <p class="nw_collect_count">被收藏{{collection_count}}次</p>
+            <div class="nw_part clearfix">
+                {{imgs}}
+            </div>
+        </div>
+    </li>
+</script>
+
+<script type="text/html" id="J-model-projects">
+    <li>
+        <div class="top_part">
+            <p onclick="openNewFrame('user_other', '{{user_id}}')" class="head_link">
+                <img src="{{photo}}" class="head" alt="">
+            </p>
+            <div class="info">
+                <div class="community_part">
+                    <p class="community">{{community}}</p>
+                    <p class="p_mark">{{stage_name}}</p>
+                </div>
+                <div class="part">
+                    <span class="part_info_list">{{house_type_name}}</span>
+                    <span class="part_info_list">{{design_style_name}}</span>
+                </div>
+                <div class="part">
+                    {{m2}}
+                    {{construction_mode_name}}
+                    {{contract_money}}
+                </div>
+                <div class="clearfix">
+                    <span class="distance">{{distance}}</span>
+                    <span class="date">{{last_modified_time}}</span>
+                </div>
+            </div>
+        </div>
+        <div class="btn_part flex">
+            <div onclick="openNewFrame('reserve', '{{company_id}}')" class="toView">
+                <p class="mainIcon toViewBtn">申请参观</p>
+            </div>
+            {{article}}
+        </div>
+    </li>
+</script>
+
+<script type="text/html" id="J-model-products">
+        <div class="product_box" onclick="openNewFrame('service_detail',{{product_id}})">
+            <img src="{{product_image_url}}">
+            <p class="tit">{{product_name}}</p>
+            <p class="mkt-price">¥{{product_new_price}}</p>
+            <p class="act-price">¥{{product_old_price}}</p>
+            <p class="lbl-wrap">已有{{product_buy_count}}人购买</p>
+        </div>
+</script>
+
+<script type="text/html" id="J-model-company-detail">
+<div class="m_detail_top">
+    <img src="{{background_url}}" class="company_face_img" alt="">
+
+    <div class="detail_data_part flex">
+
+        <div class="data_list">
+            <p>{{collection_count}}</p>
+            <p>收藏</p>
+        </div>
+
+        <div onclick="openNewFrame('appraisal', '{{user_id}}')" class="data_list">
+            <p>{{assess_count}}</p>
+            <p>真实评价</p>
+        </div>
+        <div onclick="openNewFrame('all_project','{{user_id}}')" class="data_list">
+            <p>{{project_count}}</p>
+            <p>开工数</p>
+        </div>
+    </div>
+</div>
+
+<div class="starLogo">
+    <div class="merchant_name"><img class="smallLogo" src="{{photo_url}}" height="25">{{name}}</div>
+    <div class="allStar">&nbsp;&nbsp;&nbsp;&nbsp;总评：{{score}}</div>
+</div>
+<div class="renovation"><span class="rYears"><ins>{{whole_project_years}}</ins></span>装修工程保修</div>
+<div class="renovation"><span class="rYears"><ins>{{concealed_project_years}}</ins></span>隐蔽工程保修</div>
+<!-- 到店里和优惠 -->
+<!--<ul class="box">
+    <li class="border_b">
+        <a href="javascript:;" class="box_link">
+            <p class="mainIcon ddl"></p>
+            <p class="word">{{order_slogan}}</p>
+        </a>
+    </li>
+    <li>
+        <div onclick="toReserve('{{preferential_id}}', '{{company_id}}')" class="box_link">
+            <p class="mainIcon yh"></p>
+            <p class="word">{{preferential_title}}</p>
+            <p class="mainIcon right_arrow"></p>
+        </div>
+    </li>
+</ul>
+-->
+
+<div class="main_content_list">
+    <div class="mc_title flex">
+        <a href="javascript:;" class="nav nav_active" data-id="M_project">服务产品</a>
+        <a href="javascript:;" class="nav" data-id="M_article">装修直播</a>
+        <a href="javascript:;" class="nav" data-id="M_newestWorks">最新作品</a>
+    </div>
+     <div id="M_project" class="cd_tab_box" style="display: block;">
+        <ul class="project"></ul>
+    </div>
+    <div id="M_article" class="cd_tab_box" style="display: none;">
+        <ul class="m_article_list"></ul>
+    </div>
+    <div id="M_newestWorks" class="cd_tab_box" style="display: none;">
+        <ul class="newestWorks_list clearfix"></ul>
+    </div>
+
+
+    <!--
+    <div id="M_project_more" class="cd_tab_box" style="display: none;">
+        <ul class="project"></ul>
+        <p class="ma_link_more all_project" onclick="openNewFrame('all_project','{{user_id}}')">查看全部<ins style="color: #f27220;">{{project_count}}</ins>个服务产品</p>
+    </div>
+    -->
+    <div id="M_article_more" class="cd_tab_box" style="display: none;">
+        <ul class="m_article_list"></ul>
+        <p class="ma_link_more all_article" onclick="openNewFrame('all_article','{{company_id}}')">查看全部{{article_count}}个直播</p>
+    </div>
+
+    <div id="M_newestWorks_more" class="cd_tab_box" style="display: none;">
+        <p class="ma_link_more all_product" onclick="openNewFrame('all_pruduct','{{user_id}}')">查看全部<ins style="color: #f27220;">{{product_count}}</ins>个作品</p>
+    </div>
+</div>
+
+<!--业主评价-->
+<ul class="box ownerCmt">
+    <li class="border_b">
+        <div onclick="openNewFrame('appraisal', '{{user_id}}')" class="content_part_link clearfix">
+            <p class="content_list_part">业主评价 ({{assess_count}})</p>
+            <p class="right_arrow"></p>
+            <p class="look">查看全部</p>
+        </div>
+    </li>
+    <li style="display: {{display}};">
+        <div class="owner_info clearfix">
+            <img src="{{user_photo}}" class="owner_head" alt="">
+            <p class="owner_name">{{user_nick}}</p>
+        </div>
+        <div class="score_part clearfix">
+            <p class="star star_{{construction}}">施工质量：</p>
+            <p class="star star_{{time}}">工期准时：</p>
+        </div>
+        <div class="score_part clearfix">
+            <p class="star star_{{budget}}">预算靠谱：</p>
+            <p class="star star_{{design}}">设计水平：</p>
+        </div>
+        <div class="desc">{{desc}}</div>
+    </li>
+</ul>
+
+<!-- 信息（地址、电话） -->
+<ul class="box" id="address">
+    <li class="border_a">
+        <a href="{{address_link}}" class="box_link">
+            <p class="address_mark"></p>
+            <p class="word">{{address}}</p>
+            <p class="right_arrow"></p>
+        </a>
+    </li>
+    <li class="border_a" style="visibility:{{add2_visible}}">
+        <a href="http://api.map.baidu.com/marker?location=31.217119,121.534769&amp;title=怎么装局部翻新服务&amp;content=上海市浦东新区杨高南路1685号3楼&amp;output=html" class="box_link">
+            <p class="address_mark"></p>
+            <p class="word">上海市浦东新区杨高南路1685号3楼</p>
+            <p class="right_arrow"></p>
+        </a>
+    </li>
+    {{phone}}
+</ul>
+</script>
+</body>
+</html>

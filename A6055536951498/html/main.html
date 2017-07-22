@@ -167,15 +167,13 @@
         		    if(ret){
                   api.openFrame({
                       name: 'button',
-                      opaque: false,
-                      bounces: false,
-                      bgColor: 'rgba(0,0,0,0.6)',
                       url: './frm_button.html',
+                      bgColor: 'rgba(0,0,0,0)',
                       rect: {
                           x: api.frameWidth / 4,
-                          y: api.frameHeight,
+                          y: api.frameHeight - 20,
                           w: api.frameWidth/2,
-                          h: 45
+                          h: 45,
                       }
                   });
         		    	bMap.showUserLocation({

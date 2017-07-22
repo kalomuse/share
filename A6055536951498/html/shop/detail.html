@@ -19,7 +19,7 @@
     </h1>
   </div>
 
-<div id="container"></div>
+<div id="main"></div>
 <div style="padding:10px 5px;">
   <div style="font-size:14px;line-height:30px;height:30px;border-bottom:1px solid #eeeeee;">
     地址：上海市黄浦区南京西路1080号
@@ -79,7 +79,7 @@ function init() {
   $api.get(website_zmz + '/mobile/merchant/detail/'+ api.pageParam.company_id +'?zmz_source=apicloud', function(res){
     var html = $api.html($api.byId('J-model-company-detail'));
     html = templates(html, res.company);
-    $api.append($api.byId('container'), html);
+    $api.append($api.byId('main'), html);
 
     var products = res.products;
 

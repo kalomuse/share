@@ -10,7 +10,7 @@
     <access origin="*" />
   <preference name="pageBounce" value="true"/>
   <preference name="appBackground" value="rgb(255,255,255)"/>
-  <preference name="windowBackground" value="rgba(255,255,255,1)"/>
+  <preference name="windowBackground" value="rgba(216,216,216,1)"/>
 	<preference name="frameBackgroundColor" value="rgb(255,255,255)"/>
 	<preference name="hScrollBarEnabled" value="true"/>
 	<preference name="vScrollBarEnabled" value="true"/>

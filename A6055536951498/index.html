@@ -23,7 +23,7 @@
         <div id="header">
             <h1><div class="logo" tapmode="" onclick="openSideNav();"></div>洗 呗</h1>
         </div>
-        <div id="main">
+        <div id="container">
 
         </div>
 
@@ -77,7 +77,7 @@
     apiready = function(){
       glo.init();
       //glo.clear();
-      //$api.setStorage('token', '11111');
+      $api.setStorage('token', '11111');
 
         api.setStatusBarStyle({
             style: 'dark'
@@ -99,15 +99,14 @@
             url: 'html/main.html',
             bounces: false,
             opaque: true,
-            bgColor: '#fff',
             pageParam: {
                 headerH: headerPos.h
             },
             rect: {
                 x: 0,
                 y: headerPos.h,
-                w: headerPos.w,
-                h: mainPos.h
+                w: 'auto',
+                h: 'auto'
             }
         });
     };

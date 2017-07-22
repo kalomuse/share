@@ -43,6 +43,7 @@
     width: 100%; border-bottom: 1px solid #e5e5e5;
 }
 #header h1{
+    color: black;
     position: relative;
     font-size: 20px; height: 44px; line-height: 44px; margin: 0em;
     -webkit-background-size: 140px 28px;

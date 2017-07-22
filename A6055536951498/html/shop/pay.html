@@ -7,26 +7,22 @@
     <meta name="format-detection" content="telephone=no">
     <link rel="stylesheet" href="../../css/common.css"/>
     <link rel="stylesheet" href="../../css/header_footer.css">
-    <link rel="stylesheet" href="../../css/pay_v1.0.css">
+    <link rel="stylesheet" href="../../css/pay.css">
     <title>确认订单</title>
 </head>
 <body>
-<header class="fixed">
-    <div class="headTab">
-        <div class="mainIcon back"></div>
-        <h2>确认订单</h2>
-    </div>
-</header>
+	<div id="header">
+		<h1>
+			<div class="cancel" tapmode="active" onclick="api.closeWin();"></div>
+			确认订单
+		</h1>
+	</div>
 <div id="main">
-	<input type="hidden" name="pay_order_id" value="">
-	<input type="hidden" name="order_id" value="">
-
-	<div class="list">
-        <div class="kv_box_1">
-            <h3 id="title"></h3>
-            <p class="dd_desc" id="desc"></p>
-        </div>
+    <div class="kv_box_1" style="margin:10px 0 0;">
+        <h3 id="title"></h3>
+        <p class="dd_desc" id="desc"></p>
     </div>
+
 
     <!--支付方式-->
     <div class="list">
@@ -42,6 +38,7 @@
     </div>
 
     <!--代金券信息-->
+		<!--
     <div class="list">
         <div class="kv_box_2 clearfix" id="J_voucher" onclick="openNewFrame()">
             <p class="pay_check djq"></p>
@@ -56,7 +53,6 @@
         <p>3. 如消费金额低于代金券金额，使用券后，最低仍需收取1元；</p>
     </div>
 
-    <!--  详细信息-->
     <div class="list">
         <ul class="detail_list"></ul>
         <div class="voucher_list clearfix">
@@ -64,7 +60,7 @@
             <p class="v_jinE"></p>
         </div>
     </div>
-
+	-->
 	<!-- 确认提交 -->
 	<div class="all_part">
 	    <p class="all_money"></p>
@@ -72,243 +68,6 @@
 	</div>
 </div>
 
-</body>
-<script type="text/javascript" src="../../script/jquery-2.1.1.js"></script>
-<script type="text/javascript" src="../../script/api.js"></script>
-<script type="text/javascript" src="../../script/deploy.js"></script>
-<script type="text/javascript">
-	apiready = function(){
-		var user = $api.getStorage('user');
-		var user_id = "", login_token = "";
-
-		if(user){
-			user_id = user.user_id;
-			login_token = user.login_token;
-		}
-
-        //定义一些全局变量
-        	var globeDefinition = {
-        		screen_width: api.winWidth,	//主窗口宽度
-        		screen_height: api.winHeight,	//主窗口高度
-        		pay_order_id: api.pageParam.pay_order_id,
-        		voucher_id:api.pageParam.voucher_id
-        	}
-
-    	   var funList = {
-            initMainBox: function(){
-                funList.showProgress();
-                $api.val($api.dom('input[name="pay_order_id"]'), globeDefinition.pay_order_id);
-                funList.initData();
-            },
-            initData: function(){
-            	var url = "";
-            	if(api.pageParam.from == '9kuai9') {
-            		url = basicDeploy.server_url+'/mobile/activity/9kuai9/get_order/' + api.pageParam.mobile + '?zmz_source=apicloud&login_token='+login_token;
-            		$('#wx_pay').hide();
-            	} else {
-            		url = basicDeploy.server_url+'/mobile/member/create_alipay_url/'+globeDefinition.pay_order_id+'/?zmz_source=apicloud&login_token='+login_token+'&voucher_id='+globeDefinition.voucher_id;
-            	}
-            	$api.get(url, function(ret){
-                    if(ret.stat=="ok"){
-                    		if(api.pageParam.from == '9kuai9') {
-                    			$api.val($api.dom('input[name="pay_order_id"]'), ret.pay_order_id);
-                    		}
-                        	$api.val($api.dom('input[name="order_id"]'), ret.order_id);
-                        	$api.text($api.byId('title'), ret.title);//标题
-                        	$api.attr($api.byId('title'), 'data-schedule', ret.schedule);//期数
-                        	$api.text($api.byId('desc'), ret.remark);//描述
-                        	$api.html($api.dom('.all_money'), '总计<ins>￥'+ret.sum_value+'</ins>');
-                        	$api.attr($api.dom('.all_money'), 'data-total_price', ret.sum_value);
-
-                        	//代金券
-                        	$api.text($api.dom('.djq_info'), ret.voucher_name);
-                        	$api.text($api.dom('.v_jinE'), '- '+ret.voucher_value);
-                        	$api.attr($api.dom('.v_jinE'), 'data-voucher', ret.voucher_value);
-
-                        	//清单列表
-                        	var shoppings = ret.shoppings;
-                        	$.each(shoppings, function(i){
-                        		var html = $api.html($api.byId('J-model-list'));
-                        		html = funList.templates(html, shoppings[i]);
-                        		$api.append($api.dom('.detail_list'), html);
-                        	});
-                    }else{
-                        api.toast({
-						    msg: ret.msg,
-						    duration:2000,
-						    location: 'middle'
-						});
-                    }
-                    funList.hideProgress();
-                }, 'JSON');
-
-            },
-            templates: function(html, shoppings){
-		        html = html.replace("{{name}}", shoppings.name);
-		        html = html.replace("{{count}}", shoppings.count);
-		        html = html.replace("{{jinE}}", shoppings.jinE);
-
-		        return html;
-            },
-            showProgress: function(){
-		    	     api.showProgress({
-				    style: 'default',
-				    animationType: 'zoom',
-				    title: '',
-				    text: '拼命的在加载...',
-				    modal: true
-				});
-            },
-            hideProgress: function(){
-                api.hideProgress();
-            }
-        }
-
-        $api.addEvt($api.dom('.back'), 'click', function(){
-        	api.closeWin({});
-        });
-
-    	$('.pay_style').each(function(){
-	    	$api.addEvt($api.dom('#' + $(this).attr('id')), 'click', function(){
-	        	var _self = $(this);
-	            if(_self.attr("data-checked")=="false"){
-	                $('.pay_style').each(function(){
-	                    $(this).attr("data-checked", "false");
-	                    $(this).find(".pay_check").removeClass("yes").addClass("no");
-	                });
-	                _self.attr("data-checked", "true");
-	                _self.find(".pay_check").removeClass("no").addClass("yes");
-	            }
-	        });
-        });
-
-		funList.initMainBox();
-
-	};
-
-	function openAlipay(){
-		var user = $api.getStorage('user');
-		var user_id = "", login_token = "";
-
-		if(user){
-			user_id = user.user_id;
-			login_token = user.login_token;
-		}
-		if($('.pay_style .yes').attr('value') == "alipay") {
-			if(api.pageParam.from == "9kuai9") {
-				api.alert({
-			        title: '支付结果',
-			        msg: '',
-			        buttons: ['确定'],
-			        reload: true
-			    });
-			    return;
-			}
-			//支付宝支付
-	        var obj = api.require('aliPay');
-	        var subject = $api.text($api.byId('title')) + ' 第' + $api.attr($api.byId('title'), 'data-schedule') + '期';//付款方
-			var body = $api.text($api.byId('desc')); //描述
-			var amount = $api.attr($api.dom('.all_money'), 'data-total_price');
-			var tradeNO = $api.val($api.dom('input[name="pay_order_id"]'));
-
-			var aliPay_rsaPriKey = api.loadSecureValue({key:'aliPay_rsaPubKey'}),
-			aliPay_partner = api.loadSecureValue({key:'aliPay_partner'}),
-			seller = api.loadSecureValue({key:'aliPay_seller'}),
-			rsaPubKey = api.loadSecureValue({key:'aliPay_rsaPubKey'}),
-			notifyURL = api.loadSecureValue({key:'aliPay_notifyURL'});
-			if(!aliPay_rsaPriKey) {
-				aliPay_rsaPriKey = 'MIICdwIBADANBgkqhkiG9w0BAQEFAASCAmEwggJdAgEAAoGBAPKHkXk3KVr3Pu8pvaK+EyFq+cs5+6bu/X2UZQ9FrRajRxeXPGjwWzCHJapaVHbgtBPuLa9JVXEOikn65ZHA6HdG+5IEaxt6t6eBEFYn56KpKXgmxz0yuZd4CEbwfS2+lVsaNnGIbeQa/I4WsZAU+w4VJt2DMTXtBzPTyCkFXye5AgMBAAECgYBnnF8bp+M1B3eNeQmY4xcNKcR5e9X0pRkKc0ERWzTs/Og8PdIDCtwKSVJgCqMW/jwwX4qI3g1wdUPDAzrcH8uvhG2SQqWh16kELAbhch5plWwpSr0GkjFJfBYkuHU/k1UqYP+cEbDWZA3KzznW/ecnI1fNA+qa4gKxnDNPRLY8AQJBAPrYv8huvNecK5Wr7UwikMgUwwfV/896Ih6fM/U+u0bnz8A079v0A9hRK2MgD/rvUN87uI8RPlA2YA+r2BXUjfkCQQD3gxPrV056VnYTjya0hvOY8OBvQYte5ZlTV7GwYI1YFuYEYttcE/rg0F9PHKBFXdHs3yBiathkF+AxbAi9BNfBAkEAq65pJA7WZGLYWam/0Vne6XF8QgKvABtA+uBPOUxj9JV3VL9mYo3Ri92R6lfpV/8uxHolSJWupktw14jvbZF6UQJAZ/AacEykfwlJ4mLN7SdyqjoU9YN/xGUEYxRDYP7avDA5fYQJ+/vD8Z5vN6icwSRp4F++mLWnkzjXg8mLTdz3wQJBAM7HApSg6BXX44mEbsNQ01HsHQNr30/OIHvavTpAuV7PspAQoPnv/B5mqKAvvL7rozbeIm0/A7kBxk6LD6wJ9zc=';
-				rsaPubKey = "MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQCnxj/9qwVfgoUh/y2W89L6BkRAFljhNhgPdyPuBV64bfQNN1PjbCzkIM6qRdKBoLPXmKKMiFYnkd6rAoprih3/PrQEB/VsW8OoM8fxn67UDYuyBTqA23MML9q1+ilIZwBC2AQ2UBVOrFXfFl75p6/B5KsiNG9zpgmLCUYuLkxpLQIDAQAB";
-				seller = "zhifu@zenmez.com";
-				aliPay_partner = "2088811040118677";
-				notifyURL = "http://www.zenmez.com/member/mobile/bespeak/payorder/callback/";
-			}
-
-			obj.config({
-			  partner:aliPay_partner,
-			  seller:seller,
-			  rsaPriKey:aliPay_rsaPriKey,
-			  rsaPubKey:rsaPubKey,
-			  notifyURL:notifyURL
-			},function(ret,err) {
-				  obj.pay({
-				    subject:subject,
-				    body:body,
-				    amount:amount,
-				    tradeNO:tradeNO
-				},function(ret,err) {
-					if (ret.code == '9000'){
-				    	api.openWin({
-					        name: 'myOrders',
-					        url: './myOrders.html',
-					        bounces: false,
-					        delay:200,
-					        reload: true,
-					        pageParam: {user_id: user_id}
-					    });
-					} else {
-					    api.alert({
-					        title: '支付结果',
-					        msg: ret.msg,
-					        buttons: ['确定'],
-					        reload: true
-					    });
-				   }
-				});
-			});
-		} else if($('.pay_style .yes').attr('value') == "weixin"){
-			var tradeNO = $api.val($api.dom('input[name="pay_order_id"]'));
-			$api.get(basicDeploy.server_url + '/mobile/weixin/pay/app/orders/' + tradeNO + '?zmz_source=apicloud&login_token=' + login_token, function(ret) {
-				var ret = JSON.parse(ret);
-				if (ret.stat == "ok") {
-					var wxPay = api.require('wxPay');
-					wxPay.payOrder({
-					    apiKey: ret.payorder_args.appid,
-					    orderId: ret.payorder_args.prepayid,
-					    mchId: ret.payorder_args.partnerid,
-					    nonceStr: ret.payorder_args.noncestr,
-					    timeStamp: ret.payorder_args.timestamp,
-					    package: ret.payorder_args.package,
-					    sign: ret.payorder_args.sign
-					}, function(ret, err){
-					     if(ret.status){
-					        //支付成功
-					        api.openWin({
-						        name: 'myOrders',
-						        url: './myOrders.html',
-						        bounces: false,
-						        delay:200,
-						        reload: true,
-						        pageParam: {user_id: user_id}
-						   	});
-					    }else{
-					   		alert("支付失败");
-					   }
-					});
-				}
-			});
-		} else {
-			alert("请选择支付方式");
-		}
-    }
-
-	//使用代金券
-    function openNewFrame(){
-        	var cur_amount = $api.attr($api.dom('.all_money'), 'data-total_price');
-        	var order_id = $api.val($api.dom('input[name="order_id"]'));
-        	var pay_order_id = $api.val($api.dom('input[name="pay_order_id"]'));
-
-        	api.openWin({
-    	        name: 'pay_vouchers',
-    	        url: './pay_vouchers.html',
-    	        bounces: false,
-    	        delay:200,
-    	        reload: true,
-    	        pageParam: {cur_amount:cur_amount, order_id:order_id, pay_order_id:pay_order_id}
-    	    });
-    }
-
-</script>
 <script type="text/html" id="J-model-list">
     <li class="clearfix">
         <p class="p_name">{{name}}</p>
@@ -316,4 +75,54 @@
         <p class="p_jinE">￥{{jinE}}</p>
     </li>
 </script>
+</body>
+<script type="text/javascript" src="../../script/api.js"></script>
+<script type="text/javascript" src="../../script/widget/jquery.js"></script>
+<script type="text/javascript" src="../../script/global.js"></script>
+<script type="text/javascript">
+apiready = function () {
+	glo.init();
+	init();
+
+}
+function init() {
+	$api.text($api.byId('title'), 'caonima');//标题
+	$api.text($api.byId('desc'), 'bucuo');//描述
+	$api.html($api.dom('.all_money'), '总计<span>￥'+22+'</span>');
+	$api.attr($api.dom('.all_money'), 'data-total_price', 33);
+	/*
+	//代金券
+	$api.text($api.dom('.djq_info'), ret.voucher_name);
+	$api.text($api.dom('.v_jinE'), '- '+ret.voucher_value);
+	$api.attr($api.dom('.v_jinE'), 'data-voucher', ret.voucher_value);
+	$.each(shoppings, function(i){
+		var html = $api.html($api.byId('J-model-list'));
+		html = funList.templates(html, shoppings[i]);
+		$api.append($api.dom('.detail_list'), html);
+	});
+	*/
+}
+$('.pay_style').each(function(){
+	$api.addEvt($api.dom('#' + $(this).attr('id')), 'click', function(){
+		var _self = $(this);
+		if(_self.attr("data-checked")=="false"){
+				$('.pay_style').each(function(){
+						$(this).attr("data-checked", "false");
+						$(this).find(".pay_check").removeClass("yes").addClass("no");
+				});
+				_self.attr("data-checked", "true");
+				_self.find(".pay_check").removeClass("no").addClass("yes");
+		}
+	});
+});
+
+function pay(){
+	var order_id = api.pageParam.order_id;
+	glo.post('/mobile/Payment/getCode', {'order_id': order_id, 'pay_code': $('.pay_style .yes').attr('value')}, function(res) {
+		openAlipay(res);
+	});
+}
+
+</script>
+
 </html>

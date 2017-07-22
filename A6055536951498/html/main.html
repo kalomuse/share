@@ -7,7 +7,6 @@
     <link rel="stylesheet" type="text/css" href="../css/api.css" />
 	<style>
   .shit{
-      z-index: 999;
       position: fixed;
       bottom:20px;
       border-radius: 21px; color: #fff; font-size: 20px;
@@ -166,6 +165,19 @@
               }
         		},function(ret,err){
         		    if(ret){
+                  api.openFrame({
+                      name: 'button',
+                      opaque: false,
+                      bounces: false,
+                      bgColor: 'rgba(0,0,0,0.6)',
+                      url: './frm_button.html',
+                      rect: {
+                          x: api.frameWidth / 4,
+                          y: api.frameHeight,
+                          w: api.frameWidth/2,
+                          h: 45
+                      }
+                  });
         		    	bMap.showUserLocation({
         				    isShow: true,
         				    trackingMode: 'none'

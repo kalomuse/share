@@ -7,6 +7,7 @@
     <link rel="stylesheet" type="text/css" href="../css/api.css" />
 	<style>
   .shit{
+      z-index: 999;
       position: fixed;
       bottom:20px;
       border-radius: 21px; color: #fff; font-size: 20px;
@@ -21,7 +22,7 @@
 	</style>
 </head>
 <body>
-
+  <div class="shit" tapmode onclick="dropping();">选择门店</div>
 </body>
 <script type="text/javascript" src="../script/api.js"></script>
 <script type="text/javascript" src="../script/widget/jquery.js"></script>
@@ -164,7 +165,6 @@
         		    h: api.frameHeight
               }
         		},function(ret,err){
-                $('body').append('<div class="shit" tapmode onclick="dropping();">选择门店</div>');
         		    if(ret){
         		    	bMap.showUserLocation({
         				    isShow: true,

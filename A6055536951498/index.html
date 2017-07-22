@@ -88,23 +88,18 @@
                 closeSideNav();
             }
         });
-
-        var header = $api.byId('header');
-        var headerPos = $api.offset(header);
-        var main = $api.byId('main');
-        var mainPos = $api.offset(main);
-
+        var h = $api.dom('#header').offsetHeight;
         api.openFrame({
             name: 'main',
             url: 'html/main.html',
             bounces: false,
             opaque: true,
             pageParam: {
-                headerH: headerPos.h
+                headerH: h
             },
             rect: {
                 x: 0,
-                y: headerPos.h,
+                y: h,
                 w: 'auto',
                 h: 'auto'
             }

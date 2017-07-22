@@ -4,8 +4,10 @@ var website = "http://192.168.1.112:7002";
 var website_zmz = "http://192.168.1.112:8010";
 
 var glo = {
-  init: function() {
-    this.fix_header();
+  init: function(data) {
+    if(!data)
+      data = {}
+    this.fix_header(data.header? data.header: '#header');
   },
   fix_header: function(name) {
     var header = $api.dom(name);
@@ -40,7 +42,6 @@ var glo = {
   open_win: function(pageList){
     if(!$.isArray(pageList))
       pageList = [pageList];
-
     for(index in pageList) {
       var url = pageList[index].url;
       if(!url) {
@@ -144,14 +145,13 @@ var glo = {
       self.open_frame({url: './login.html'});
    });
   },
-  reload: function() {
+  reload: function(callback) {
     var self = this;
     api.setCustomRefreshHeaderInfo({
       bgColor: '#fff',
     }, function() {
-        api.refreshHeaderLoadDone();
-        self.reload();
-        location.reload();
+      api.refreshHeaderLoadDone();
+      callback();
     });
   },
   scrolltobottom: function(callback){

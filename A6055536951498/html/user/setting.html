@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="format-detection" content="telephone=no">
+    <link rel="stylesheet" type="text/css" href="../../css/api.css" />
+    <link rel="stylesheet" type="text/css" href="../../css/common.css" />
+    <link rel="stylesheet" type="text/css" href="../../css/setting.css" />
+    <title>设置</title>
+</head>
+<body>
+  <div id="header">
+    <h1>
+      <div class="cancel" tapmode="active" onclick="api.closeWin();"></div>
+      设 置
+    </h1>
+  </div>
+<div class="blankblock">
+</div>
+	<div id="main">
+		<ul class="boxList">
+	        <li class="">
+	            <div onclick="openNewFrame()" class="toLink flex">
+	                <p class="partName border_b">关于洗呗</p>
+	                <div class="red-point"></div>
+	                <div class="mainIcon np_rightArrow"></div>
+	            </div>
+	        </li>
+	        <li>
+                <div onclick="glo.clear()" class="toLink flex">
+                    <p class="partName">清除怎么装存储空间</p>
+                </div>
+            </li>
+	    </ul>
+	    <ul class="boxList">
+	        <li>
+	            <div onclick="glo.logout()" class="toLink flex">
+	                <input type="button" class="logOutBtn" value="退出登录">
+	            </div>
+	        </li>
+	    </ul>
+	</div>
+</body>
+<script type="text/javascript" src="../../script/api.js"></script>
+<script type="text/javascript" src="../../script/widget/jquery.js"></script>
+<script type="text/javascript" src="../../script/global.js"></script>
+<script type="text/javascript">
+
+</script>
+</html>

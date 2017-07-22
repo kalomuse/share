@@ -1,0 +1,70 @@
+.boxList{
+    border-top: 1px #e2e2e8 solid;
+    border-bottom: 1px #e2e2e8 solid;
+    background-color: #fff;
+    margin-top: 15px;
+}
+.boxList li{
+    height: 44px;
+}
+.boxList li .toLink{
+    display: block;
+    position: relative;
+}
+.boxList li .toLink .partName{
+    font-size: 16px;
+    -moz-font-smoothing: antialiased;
+    -webkit-font-smoothing: antialiased;
+    color: #101010;
+    line-height: 44px;
+    padding: 0 30px 0 0;
+    margin: 0 0 0 15px;
+    -webkit-box-flex: 1;
+    -moz-box-flex: 1;
+}
+.red-point {
+	position: absolute;
+	width: 7px;
+	height: 7px;
+	background: red;
+	border-radius: 50%;
+	top: 20px;
+	right: 40px;
+}
+.np_rightArrow{background-position: 0 -219px; width: 8px; height: 13px; position: absolute; top: 15px; right: 15px;}
+.logOutBtn{
+	-webkit-appearance: none;
+    -moz-appearance: none;
+    -webkit-box-flex: 1;
+    -moz-box-flex: 1;
+    width: 100%;
+    border: none;
+    color: #666;
+    display: block;
+    height: 44px!important;
+    line-height: 44px;
+    font-size: 16px;
+    background-color: #fff;
+}
+.logo{
+	display: block;
+	width: 146px;
+    height: 70px;
+	margin: 65px auto 10px;
+}
+#version{
+	text-align: center;
+	font-size: 14px;
+	color: #666;
+	-moz-font-smoothing: antialiased;
+    -webkit-font-smoothing: antialiased;
+}
+.zmzDesc{
+	margin: 50px 15px 0;
+	font-size: 14px;
+	color: #333;
+	text-indent: 2em;
+}
+.border_b{
+    border-bottom: 1px #e2e2e8 solid;
+}

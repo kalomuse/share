@@ -213,7 +213,7 @@
 
             return mark;
         }
-        
+
     };
     u.remove = function(el){
         if(el && el.parentNode){
@@ -331,7 +331,7 @@
                     break;
             }
         }
-        
+
     };
     u.prepend = function(el, html){
         if(!u.isElement(el)){
@@ -475,7 +475,7 @@
         }
     };
 
-   
+
     /*by king*/
     u.fixIos7Bar = function(el){
         if(!u.isElement(el)){
@@ -575,17 +575,17 @@
         api.ajax(json,
             function(ret,err){
                 if (ret) {
-                    fnSuc && fnSuc(ret);
+                  if(typeof(ret) == 'string')
+                    ret = JSON.parse(ret);
+                  fnSuc && fnSuc(ret);
                 }
             }
         );
     };
 
 /*end*/
-    
+
 
     window.$api = u;
 
 })(window);
-
-

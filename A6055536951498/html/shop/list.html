@@ -48,20 +48,10 @@
     </div>
 </div>
 
-<!-- 主题内容显示部分-->
-<div id='wrapper' style="top:0px;bottom:0px;">
-<div id="scroller-main">
-	<div id = "scroller-pullDown" style="top:-4px;">
-        <span id = "down-icon" class = "icon-double-angle-down pull-down-icon"></span>
-		<span id = "pullDown-msg" class = "pull-down-msg"></span>
-	</div>
-    <input type="hidden" name="page" value="1">
-    <ul class="merchant"></ul>
-</div>
-</div>
+<ul class="merchant"></ul>
 <script type="text/html" id="J-model-company">
     <li>
-        <div tapmode="" onclick="openNewFrame('{{id}}')" class="shop_link flex">
+        <div tapmode="" onclick="glo.open_win({url: '../shop/detail.html', pageParam: {company_id: {{id}}}})" class="shop_link flex">
             <div class="shop_face_img_part">
                 <img data-original="{{background_url}}" class="shop_faceImg lazy" alt="">
             </div>
@@ -94,10 +84,14 @@
 <script type="text/javascript">
 apiready = function() {
   glo.init();
+  glo.scrolltobottom(init);
+  init();
+}
+
+function init() {
   $api.post(website_zmz +'/mobile/merchant/index?zmz_source=apicloud', {
     body: {}
   }, function(ret) {
-    glo.echo(ret);
     var companies = ret.companies;
     $.each(companies, function(i){
         var html = $api.html($api.byId('J-model-company'));
@@ -105,30 +99,43 @@ apiready = function() {
         $api.append($api.dom('.merchant'), html);
     });
   });
-  function toReplaceModel (html, companies){
-      html = html.replace("{{id}}", companies.id);
-      html = html.replace("{{background_url}}", companies.background_url);
-      html = html.replace("{{name}}", companies.name);
-      html = html.replace("{{score}}", companies.score);
-      html = html.replace("{{project_count}}", companies.project_count);
-      html = html.replace("{{distance}}", companies.distance);
-      html = html.replace("{{is_honesty}}", companies.is_honesty ? '<p class="bg_gray">赔</p>' : '');
-      html = html.replace("{{is_budget}}", companies.is_budget ? '<p class="bg_cyan-blue">算</p>' : '');
-      html = html.replace("{{is_rights}}", companies.is_rights ? '<p class="bg_green">维</p>' : '');
-      html = html.replace("{{is_quality}}", companies.is_quality ? '<p class="bg_blue">云</p>' : '');
-      html = html.replace("{{business}}", companies.business);
-      html = html.replace("{{product_lable1}}", companies.product_lable1);
-      html = html.replace("{{product_lable2}}", companies.product_lable2);
-      if (companies.company_lable_id == '1')
-        html = html.replace("{{company_lable}}", '<span class="company_lable_red">' + companies.company_lable + '</span>');
-      else if(companies.company_lable_id == '2')
-        html = html.replace("{{company_lable}}", '<span class="company_lable_orange">' + companies.company_lable + '</span>');
-      else {
-        html = html.replace("{{company_lable}}", '');
-      }
-      return html;
-  }
+}
+function location() {
+  var baiduLocation = api.require('baiduLocation');
+  baiduLocation.startLocation({
+      accuracy: '10m',
+      filter:1,
+      autoStop: true
+  }, function(ret, err){
+    glo.echo(ret);
+    var sta = ret.status;
+    var lat = ret.latitude;
+    var lon = ret.longitude;
+  });
+}
+function toReplaceModel (html, companies){
+    html = html.replace("{{id}}", companies.id);
+    html = html.replace("{{background_url}}", companies.background_url);
+    html = html.replace("{{name}}", companies.name);
+    html = html.replace("{{score}}", companies.score);
+    html = html.replace("{{project_count}}", companies.project_count);
+    html = html.replace("{{distance}}", companies.distance);
+    html = html.replace("{{is_honesty}}", companies.is_honesty ? '<p class="bg_gray">赔</p>' : '');
+    html = html.replace("{{is_budget}}", companies.is_budget ? '<p class="bg_cyan-blue">算</p>' : '');
+    html = html.replace("{{is_rights}}", companies.is_rights ? '<p class="bg_green">维</p>' : '');
+    html = html.replace("{{is_quality}}", companies.is_quality ? '<p class="bg_blue">云</p>' : '');
+    html = html.replace("{{business}}", companies.business);
+    html = html.replace("{{product_lable1}}", companies.product_lable1);
+    html = html.replace("{{product_lable2}}", companies.product_lable2);
+    if (companies.company_lable_id == '1')
+      html = html.replace("{{company_lable}}", '<span class="company_lable_red">' + companies.company_lable + '</span>');
+    else if(companies.company_lable_id == '2')
+      html = html.replace("{{company_lable}}", '<span class="company_lable_orange">' + companies.company_lable + '</span>');
+    else {
+      html = html.replace("{{company_lable}}", '');
+    }
 
+    return html;
 }
 </script>
 

@@ -8,11 +8,6 @@
     <link rel="stylesheet" type="text/css" href="./css/common.css" />
     <link rel="stylesheet" type="text/css" href="./css/fonts/css/font-awesome.min.css" />
     <style>
-    	  #footer{
-            height: 60px;
-            padding-top:10px;
-        }
-
         #content{
             display: -webkit-box;
             display: -webkit-flex;
@@ -20,32 +15,6 @@
             -webkit-box-orient: horizontal;
             -webkit-flex-flow: row;
                    flex-flow: row;
-        }
-        #content .shit{
-            -webkit-box-flex: 1;
-            -webkit-flex: 1;
-            flex: 1;
-        }
-        .voice, .order{
-            width: 42px; height: 42px; border-radius: 42px;
-            border:1px solid #ff8e05; text-align: center; line-height: 42px;
-            font-size: 20px; color: #ff8903;
-        }
-        .voice{
-            margin-left: 14px;
-        }
-        .order{
-            font-size: 14px; margin-right: 14px;
-        }
-        .shit{
-            border-radius: 6px; color: #fff; font-size: 20px;
-            text-align: center; line-height: 42px;
-            color: white;
-            font-size: 21px;
-            margin: 0 10px;
-            background:#f88f00;
-            -webkit-background-size: 108px 27px;
-            background-size: 108px 27px;
         }
     </style>
 </head>
@@ -57,13 +26,7 @@
         <div id="main">
 
         </div>
-        <div id="footer">
-            <div id="content">
-                <div class="voice fa fa-microphone" tapmode onclick="speak();"></div>
-                <div class="shit" tapmode onclick="dropping();">选择门店</div>
-                <div class="order" tapmode onclick="order();">预约</div>
-            </div>
-        </div>
+
     </div>
 </body>
 <script type="text/javascript" src="./script/api.js"></script>
@@ -102,40 +65,19 @@
     }
 
     function dropping(){
-        api.openWin({
-	        name: 'dropping',
+        glo.open_win({
 	        animation: {
 	        	type: 'movein',
 	        	subType: 'from_right'
 	        },
-	        url: './html/win_dropping.html'
-        });
-    }
-
-    function order(){
-    	api.openWin({
-	        name: 'win_order',
-	        url: './html/win_order.html',
-	        animation: {
-	        	type: 'movein',
-	        	subType: 'from_right'
-	        }
-        });
-    }
-
-    function speak(){
-        api.openWin({
-            name: 'win_speak',
-            url: './html/win_speak.html',
-            opaque: false,
-            animation: {
-                type: 'fade'
-            }
+	        url: './html/shop/list.html'
         });
     }
 
     apiready = function(){
-      glo.clear();
+      //glo.clear();
+      $api.setStorage('token', '11111');
+
         api.setStatusBarStyle({
             style: 'dark'
         });

@@ -8,10 +8,10 @@
     </author>
     <content src="index.html" />
     <access origin="*" />
-    <preference name="pageBounce" value="false"/>
-	<preference name="appBackground" value="rgba(0,0,0,0.0)"/>
-	<preference name="windowBackground" value="rgba(0,0,0,0.0)"/>
-	<preference name="frameBackgroundColor" value="rgba(0,0,0,0.0)"/>
+  <preference name="pageBounce" value="true"/>
+  <preference name="appBackground" value="rgb(255,255,255)"/>
+  <preference name="windowBackground" value="rgba(255,255,255,1)"/>
+	<preference name="frameBackgroundColor" value="rgb(255,255,255)"/>
 	<preference name="hScrollBarEnabled" value="true"/>
 	<preference name="vScrollBarEnabled" value="true"/>
 	<preference name="autoLaunch" value="true"/>
@@ -29,4 +29,25 @@
       <param name="android_api_key" value="pibM1MPPE4pl5cFgNkBg9GNknNZ64M7k" />
       <param name="ios_api_key" value="hSxi06odifgIKb9xevxLzyO2R3sh05cP" />
   </feature>
+
+  <preference name="customRefreshHeader" value="UIPullRefresh" />
+
+  <feature name="wx">
+   <param name="urlScheme" value="wxb5d49f36175df4b2"/>
+   <param name="apiKey" value="wxb5d49f36175df4b2"/>
+   <param name="apiSecret" value="f859682ddda78fea4d4eef8acd47403f"/>
+ </feature>
+ <feature name="wxPay">
+   <param name="urlScheme" value="wxb5d49f36175df4b2"/>
+   <param name="apiKey" value="wxb5d49f36175df4b2"/>
+   <param name="apiSecret" value="f859682ddda78fea4d4eef8acd47403f"/>
+ </feature>
+ <feature name="aliPay">
+   <param name="urlScheme" value="AliPayA6987532166058"/>
+ </feature>
+ <feature name="qq">
+   <param name="urlScheme" value="tencent1106269280"/>
+   <param name="apiKey" value="1106269280"/>
+ </feature>
+
 </widget>

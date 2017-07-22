@@ -15,10 +15,10 @@
 .third-area{line-height: 58px; _line-height: 43px; color: #737373; float: left;width:100%;text-align: center;overflow: hidden;margin: auto;margin-top: 15px;}
 .third-area a { display: inline-block; *display:inline;zoom: 1;  width: 50px; height: 50px; font-size: 0; overflow: hidden; margin: 6px 10px 0px; }
 .third-area-a{font-size: 12px;}
-.ta-qq{background:url(../../image/login/pub_user.png) no-repeat;background-size: auto 350px;}
-.ta-weibo{background:url(../../image/login/pub_user.png) no-repeat;background-size: auto 350px; background-position:0 -70px;}
-.ta-alipay{background:url(../../image/login/pub_user.png) no-repeat;background-size: auto 350px;  background-position:0 -154px;}
-.ta-weixin{background:url(../../image/login/pub_user.png) no-repeat;background-size: auto 350px;  background-position:0 -228px;}
+.ta-qq{background:url(../image/login/pub_user.png) no-repeat;background-size: auto 350px;}
+.ta-weibo{background:url(../image/login/pub_user.png) no-repeat;background-size: auto 350px; background-position:0 -70px;}
+.ta-alipay{background:url(../image/login/pub_user.png) no-repeat;background-size: auto 350px;  background-position:0 -154px;}
+.ta-weixin{background:url(../image/login/pub_user.png) no-repeat;background-size: auto 350px;  background-position:0 -228px;}
 .yanzheng{ width:100%; overflow:hidden; margin-top:10px; margin-bottom:10px;}
 .codeTxt{ width:50%; height:35px; float:left;}
 .codeTxt input{border: 1px solid #DFDFDF; height:35px; line-height:35px; width:95%; padding-left: 5px; -webkit-appearance: none; -webkit-box-flex: 1; -webkit-flex: 1; flex: 1; border-radius: 0; -webkit-rtl-ordering: logical; -webkit-user-select: text; cursor: auto; background-color: white; font-size:14px; line-height:30px;}

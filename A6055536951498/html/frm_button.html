@@ -18,4 +18,15 @@
 <body style="margin: 0;">
   <div class="shit" tapmode onclick="dropping();">选择门店</div>
 </body>
+<script>
+function dropping(){
+    glo.open_win({
+      animation: {
+        type: 'movein',
+        subType: 'from_right'
+      },
+      url: './shop/list.html'
+    });
+}
+</script>
 </html>

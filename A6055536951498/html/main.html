@@ -21,7 +21,7 @@
 	</style>
 </head>
 <body>
-  <div class="shit" tapmode onclick="dropping();">选择门店</div>
+
 </body>
 <script type="text/javascript" src="../script/api.js"></script>
 <script type="text/javascript" src="../script/widget/jquery.js"></script>
@@ -164,6 +164,7 @@
         		    h: api.frameHeight
               }
         		},function(ret,err){
+                $('body').append('<div class="shit" tapmode onclick="dropping();">选择门店</div>');
         		    if(ret){
         		    	bMap.showUserLocation({
         				    isShow: true,

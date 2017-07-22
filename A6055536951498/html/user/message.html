@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="format-detection" content="telephone=no">
+    <link rel="stylesheet" type="text/css" href="../../css/common.css" />
+    <link rel="stylesheet" type="text/css" href="../../css/setting.css" />
+    <title>我的消息</title>
+</head>
+<body>
+  <div id="header">
+    <h1 style="color:black;">
+      <div class="cancel" tapmode="active" onclick="api.closeWin();"></div>
+      我的消息
+    </h1>
+  </div>
+</body>
+<script type="text/javascript" src="../../script/api.js"></script>
+<script type="text/javascript" src="../../script/widget/jquery.js"></script>
+<script type="text/javascript" src="../../script/global.js"></script>
+<script type="text/javascript">
+	apiready = function() {
+		glo.init();
+	}
+</script>
+</html>

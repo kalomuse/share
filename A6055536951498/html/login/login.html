@@ -227,17 +227,15 @@ function authQQ() {
         'unionid': res.unionid,
       }
       //注册
-      glo.echo(data);
       third_login(data);
     });
   }
 
   function third_login(data) {
-    glo.echo(data);
     glo.post('/mobile/login/third_login', data, function(res) {
-      glo.echo(res);
       if(res.status == 1) {
         glo.set_loginInfo(res);
+        api.closeWin();
       } else {
         glo.echo(res.msg);
       }

@@ -104,6 +104,8 @@ function authQQ() {
 		wx.auth({
 
 		}, function(ret, err) {
+      glo.echo('c');
+      glo.echo(ret);
       api.hideProgress();
 			if (ret) {
 				if (ret.status) {
@@ -157,6 +159,8 @@ function authQQ() {
       apiSecret: '',
       code: code
     }, function(ret, err) {
+      glo.echo('b');
+      glo.echo(ret);
       if (ret) {
         if (ret.status) {
           var accessToken=ret.accessToken;
@@ -218,6 +222,8 @@ function authQQ() {
       accessToken: accessToken,
       openId: openId
     }, function(res, err) {
+      glo.echo('d');
+      glo.echo(ret);
       var data = {
         'oauth': 'weixin',
         'openid' : res.openid,
@@ -232,6 +238,7 @@ function authQQ() {
   }
 
   function third_login(data) {
+    alert('e');
     glo.post('/mobile/login/third_login', data, function(res) {
       if(res.status == 1) {
         glo.set_loginInfo(res);

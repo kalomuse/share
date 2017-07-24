@@ -218,7 +218,6 @@ function authQQ() {
       accessToken: accessToken,
       openId: openId
     }, function(res, err) {
-      glo.echo(res);
       var data = {
         'oauth': 'weixin',
         'openid' : res.openid,
@@ -234,8 +233,9 @@ function authQQ() {
   }
 
   function third_login(data) {
-    alert('e');
+    glo.echo(data);
     glo.post('/mobile/login/third_login', data, function(res) {
+      glo.echo(res);
       if(res.status == 1) {
         glo.set_loginInfo(res);
       } else {

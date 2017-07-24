@@ -45,9 +45,8 @@
  <feature name="aliPay">
    <param name="urlScheme" value="AliPayA6987532166058"/>
  </feature>
- <feature name="qq">
-   <param name="urlScheme" value="tencent1106269280"/>
-   <param name="apiKey" value="1106269280"/>
+ <feature name="QQPlus">
+    <param name="urlScheme" value="tencent1106269280" />
+    <param name="apiKey" value="1106269280" />
  </feature>
-
 </widget>

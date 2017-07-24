@@ -11,24 +11,12 @@
 <body>
   <div id="header">
 		<h1>
-			<div class="cancel" tapmode="active" onclick="api.closeWin();"></div>
+			<div class="cancel" tapmode="active" onclick="api.closeFrame();"></div>
 			注 册
 		</h1>
   </div>
 <div id="tbh5v0">
     <div class="log_reg_box">
-        <ul class="tab" id="logRegTab">
-            <li id="mob_log" class="curr" onClick="changeForm(this)">
-                <span>
-                    <font>手机注册</font>
-                </span>
-            </li>
-            <li id="email_log" class="curr currr" onClick="changeForm(this)">
-                <span>
-                    <font>邮箱注册</font>
-                </span>
-            </li>
-        </ul>
         <div id="logRegTabCon">
             <div class="log_reg_item" id="phonearea">
                 <div id="mobileForm" name="mobileForm" >
@@ -61,133 +49,29 @@
                         <input type="submit" id="btn_submit" name="Submit" class="btn_big1" value="注 册" onclick="submit()"/>
             </div>
             </div>
-            <div class="log_reg_item hide" id="emailarea">
-                <div id="emailForm" name="emailForm">
-                    <div class="field email">
-                            <div class="st">
-                                <input type="email" name="username" placeholder="邮箱地址" value="" class="c-form-txt-normal" id="username" onBlur="checkEmail2(this.value);" />
-                            </div>
-                            <div class="tips">
-                                <span id="email_notice"></span>
-                            </div>
-                        </div>
-                        <div class="field pwd">
-                            <div>
-                                <input type="password" name="password" id="password" onBlur="check_password(this.value);" value="" placeholder="密码" class="c-form-txt-normal" />
-                            </div>
-                            <div class="tips">
-                                <span id="password_notice"> </span>
-                            </div>
-                        </div>
-                        <div class="field pwd">
-                            <div>
-                                <input type="password" name="password2" id="password2" onBlur="check_confirm_password(this.value);" value="" placeholder="确认密码" class="c-form-txt-normal">
-                            </div>
-                            <div class="tips">
-                                <span id="confirm_password_notice"> </span>
-                            </div>
-                        </div>
-                        <if condition="$regis_smtp_enable eq 1">
-                        <div class="yanzheng" style=" margin-top:0px;">
-                              <div class="codeTxt">
-                                <input type="text" id="email_code" name="email_code"  placeholder="邮箱验证码"/></div>
-                                   <div class="codePhoto">
-                                    <input id="zemail" name="getemailcode" type="button" rel="email" value="获取邮箱验证码 " class="zphone" onClick="sendcode(this)" style=" color:#FFF" />
-                                  </div>
-                        </div>
-                        </if>
-                        <input type="checkbox" style="display: none" name="agreement" value="1" checked="checked" required />
-                        <input type="submit" id="btn_submit" name="Submit" class="btn_big1" value="注 册" onclick="submit()"/>
-                </div>
-            </div>
         </div>
     </div>
     <script type="text/javascript" src="../../script/api.js"></script>
     <script type="text/javascript" src="../../script/widget/jquery.js"></script>
     <script type="text/javascript" src="../../script/global.js"></script>
 <script type="text/javascript">
-
-setCurrentForm($("#mobileForm"));
+currentForm = $("#mobileForm");
 var flag = false;
 
 function submit() {
   var data = check_submit();
+  data['type'] = 'mobile';
   if(!data)
     return false;
-  glo.post('/mobile/user/reg', data, function(res) {
+  glo.post('/mobile/login/reg', data, function(res) {
     if(res.status != 1) {
       alert(res.msg);
     } else {
       glo.set_loginInfo(res);
-      glo.open_frame([
-        {
-            url: './index.html',
-            bounces: false,
-            rect:{
-                x: 0,
-                y: 0,
-                w: 'auto',
-                h: $api.getStorage('main_h'),
-
-            }
-          }, {
-            url: '../public/footer_nav.html',
-            bounces: false,
-            rect:{
-                x: 0,
-                y: $api.getStorage('main_h'),
-                w: 'auto',
-                h: 'auto'
-            }
-          }
-      ]);
+      api.closeWin();
     }
   });
 }
-
-function changeForm(obj){
-    $(obj).removeClass('currr');
-    $(obj).siblings().addClass('currr');
-    if($(obj).attr('id')=='mob_log'){
-        $('#phonearea').show();
-        setCurrentForm($("#mobileForm"))
-        $('#emailarea').hide();
-    }else{
-        $('#phonearea').hide();
-        setCurrentForm($("#emailForm"))
-        $('#emailarea').show();
-    }
-}
-
-function setCurrentForm(formObj) {
-    currentForm = $(formObj);
-}
-
-function checkEmail2(email){
-    if(email == ''){
-        $('#email_notice').css('color','red');
-        $('#email_notice').html('* 邮件地址不能为空');
-        flag = false;
-    }else if(checkEmail(email)){
-      glo.get('/Home/Api/issetMobileOrEmail?mobile=' + email, function(data) {
-          if(data == '0')
-          {
-              $('#email_notice').css('color','green');
-              $('#email_notice').html('* 可以注册');
-              flag = true;
-          }else{
-              $('#email_notice').css('color','red');
-              $('#email_notice').html('* 邮箱已经存在');
-              flag = false;
-          }
-      });
-    }else{
-        $('#email_notice').css('color','red');
-        $('#email_notice').html('* 邮件地址不正确');
-        flag = false;
-    }
-}
-
 
 function checkMobilePhone(mobile){
     if(mobile == ''){
@@ -195,7 +79,7 @@ function checkMobilePhone(mobile){
         $('#mobile_phone_notice').html('* 手机号码不能为空');
         flag = false;
     }else if(checkMobile(mobile)){
-      glo.get('/Home/Api/issetMobile?mobile=' + mobile, function(data)
+      glo.get('/mobile/login/issetMobile?mobile=' + mobile, function(data)
       {
           if(data == '0')
           {
@@ -208,8 +92,7 @@ function checkMobilePhone(mobile){
               flag = false;
           }
       });
-
-    }else{
+    } else{
         $('#mobile_phone_notice').css('color','red');
         $('#mobile_phone_notice').html('* 手机号码格式不正确');
         flag = false;
@@ -270,16 +153,16 @@ function check_submit()
 
 function sendcode(o){
     if(flag){
-      glo.post('/Home/Api/send_validate_code?t='+Math.random(),
-        { type:$(o).attr('rel'),
-          send:$.trim($(currentForm).find('#username').val()) ,
-          scene:1
+      glo.post('/mobile/common/send_message?t='+Math.random(),
+        {
+          type:'mobile',
+          mobile: $.trim($(currentForm).find('#username').val()) ,
         }, function(res){
             if(res.status==1){
-                layer.open({content:res.msg,time:1});
+                glo.alert(res.msg, 1000);
                 countdown(o);
             }else{
-                layer.open({content:res.msg,time:2});
+                glo.alert(res.msg, 2000);
             }
         });
     }

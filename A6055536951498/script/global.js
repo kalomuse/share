@@ -1,6 +1,6 @@
 
-//var website = "http://share.tikyy.com";
-var website = "http://192.168.1.113:7002";
+var website = "http://share.tikyy.com";
+//var website = "http://192.168.1.113:7002";
 var website_zmz = "http://192.168.1.112:8010";
 
 var glo = {
@@ -186,6 +186,14 @@ var glo = {
  },
 
 
+}
+function checkMobile(tel) {
+    var reg = /(^1[3|4|5|7|8][0-9]{9}$)/;
+    if (reg.test(tel)) {
+        return true;
+    }else{
+        return false;
+    };
 }
 function addParama(url, key, val) {
   if (url.indexOf('?') != -1) {

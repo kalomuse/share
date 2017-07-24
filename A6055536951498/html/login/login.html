@@ -72,7 +72,7 @@ function authQQ() {
 			modal: false
 		});
     setTimeout("glo.hide_progress()", 3000);
-  var qq = api.require('qq');
+  var qq = api.require('QQPlus');
   qq.login(function(res, err) {
     if(res.status) {
       api.hideProgress();
@@ -152,7 +152,7 @@ function authQQ() {
 	}
 
   function third_login(data) {
-    glo.post('/mobile/user/third_login', data, function(res) {
+    glo.post('/mobile/login/third_login', data, function(res) {
       if(res.status == 1) {
         glo.set_loginInfo(res);
       } else {

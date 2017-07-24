@@ -155,6 +155,7 @@ function authQQ() {
     glo.post('/mobile/login/third_login', data, function(res) {
       if(res.status == 1) {
         glo.set_loginInfo(res);
+        api.closeWin();
       } else {
         glo.echo(res.msg);
       }

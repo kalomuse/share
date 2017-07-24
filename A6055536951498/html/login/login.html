@@ -61,7 +61,7 @@
 <script type="text/javascript" src="../../script/global.js"></script>
 <script type="text/javascript">
 apiready = function(){
-  
+
 }
 function authQQ() {
   api.showProgress({
@@ -91,7 +91,7 @@ function authQQ() {
     }
   });
 }
-//微信登录
+  //微信登录
 	function authWX() {
     api.showProgress({
       style: 'default',
@@ -180,10 +180,8 @@ function checkSubmit()
         return false;
     }
 
-    head_h = $api.getStorage('head_h');
-    main_h = $api.getStorage('main_h');
     $('.btn_big1').val('登录中...');
-    glo.post('/mobile/user/do_login', {
+    glo.post('/mobile/login/do_login', {
         'username': username,
         'password': password,
       }, function(res) {
@@ -191,9 +189,9 @@ function checkSubmit()
           glo.set_loginInfo(res);
           $('.btn_big1').val('登 录');
           if(api.pageParam.from) {
-            return glo.open_frame(api.pageParam.from);
+            glo.open_win(from);
           } else {
-            glo.echo('登录成功');
+            api.closeWin();
           }
         } else {
           $('.btn_big1').val('登 录');

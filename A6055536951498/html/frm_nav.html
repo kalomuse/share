@@ -43,7 +43,7 @@
         <div class="logo-section" id="logo-section">
             <img src="../image/fix/menu_icn_head.png" alt="">
             <div class="user-info" id="user-info">
-                <div class="user-phone">187****8888</div>
+                <div class="user-phone"></div>
                 <div class="user-level">普通会员</div>
             </div>
         </div>
@@ -59,7 +59,7 @@
             <div class="tool" tapmode="tool-hover" onclick="glo.open_win({url: './user/message.html'})">
                 <img src="../image/fix/menu_icn_message.png" alt="" class="fix-ico"><span class="text">消息中心</span>
             </div>
-            <div class="tool" tapmode="tool-hover" onclick="glo.open_win({url: './user/money.html'})">
+            <div class="tool" tapmode="tool-hover" onclick="glo.open_win({url: './user/setting.html'})">
                 <img src="../image/fix/menu_icn_setting.png" alt="" class="fix-ico"><span class="text">设置</span>
             </div>
         </div>
@@ -80,9 +80,15 @@
                 script: 'closeSideNav()'
             });
         }
- });
+   });
+   function reload() {
+      alert('cc');
+   }
 
     apiready = function(){
+      $('.user-phone').html($api.getStorage('uname'));
+      $('.logo-section img').attr('src', $api.getStorage('head_pic') && $api.getStorage('head_pic') != 'undefined'?$api.getStorage('head_pic'): '../image/fix/menu_icn_head.png');
+        //alert($api.getStorage('head_pic')?$api.getStorage('head_pic'): '../image/fix/menu_icn_head.png');
         var header = $api.byId('logo-section');
         var header2 = $api.byId('user-info');
         $api.fixIos7Bar(header);

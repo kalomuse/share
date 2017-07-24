@@ -1,6 +1,6 @@
 
 //var website = "http://share.tikyy.com";
-var website = "http://192.168.1.112:7002";
+var website = "http://192.168.1.113:7002";
 var website_zmz = "http://192.168.1.112:8010";
 
 var glo = {
@@ -102,9 +102,8 @@ var glo = {
 
   },
   set_loginInfo: function(res) {
-
     $api.setStorage('user_id', res.user_id);
-    $api.setStorage('is_distribut', res.s_distribut);
+    $api.setStorage('head_pic', res.head_pic);
     $api.setStorage('uname', res.uname);
     $api.setStorage('mobile', res.mobile);
     $api.setStorage('token', res.token);
@@ -127,9 +126,13 @@ var glo = {
     });
   },
   clear: function() {
+    api.execScript({
+        name: 'root',
+        script: 'closeSideNav()'
+    });
     $api.rmStorage('user_id');
-    $api.rmStorage('is_distribut');
     $api.rmStorage('uname');
+    $api.rmStorage('head_pic');
     $api.rmStorage('mobile');
     $api.rmStorage('token');
     api.toast({
@@ -140,10 +143,7 @@ var glo = {
   },
   logout: function() {
    this.clear();
-   var self = this;
-   this.get('/mobile/user/app_logout', function(res) {
-      self.open_frame({url: './login.html'});
-   });
+   api.closeWin();
   },
   reload: function(callback) {
     var self = this;

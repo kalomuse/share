@@ -63,18 +63,21 @@ function show_validate_type(validate_type_obj){
     $(".v_item").hide();
     $(".v_"+type).show();
 }
-
 function sendcode(o){
-    var type = $("#validate_type").val();
-    var send = $("#validate_type_"+type).attr("val");
-    glo.post('/Home/Api/send_validate_code?device=1&t='+Math.random(), {type:type,send:send,scene:2}, function(res){
+  var type = $("#validate_type").val();
+  var send = $("#validate_type_"+type).attr("val");
+  glo.post('/mobile/common/send_message?t='+Math.random(),
+    {
+      type: type,
+      mobile: send,
+    }, function(res){
         if(res.status==1){
-            layer.open({content:res.msg,time:1});
+            glo.alert(res.msg, 1000);
             countdown(o);
         }else{
-            layer.open({content:res.msg,time:2});
+            glo.alert(res.msg, 2000);
         }
-    })
+    });
 }
 
 apiready = function() {
@@ -110,21 +113,21 @@ apiready = function() {
                 alert("验证码不能为空！");
                 return false;
             }
-            tpcode = $("#mobile_code").val();
+            code = $("#mobile_code").val();
         }else if(type == 'email'){
             if($("#email_code").val().length == 0){
                 $("#email_code").focus();
                 alert("验证码不能为空！");
                 return false;
             }
-            tpcode = $("#email_code").val();
+            code = $("#email_code").val();
         }
         var timestamp = Date.parse( new Date());
-        glo.post('/Home/Api/check_validate_code?t=' + Math.random(), {timestamp:timestamp, code:tpcode,send:send,type:type,scene:2}, function(res){
+        glo.post('/mobile/login/check_validate_code?t=' + Math.random(), {timestamp:timestamp, code:code,send:send,type:type,scene:2}, function(res){
             if(res.status==1){
-                glo.open_frame({url: './set_pwd.html'});
+                glo.open_frame({url: './set_pwd.html', pageParam: res});
             }else{
-                layer.open({content:res.msg,time:2});
+                glo.alert(res.msg, 2000);
             }
         });
     });
@@ -145,7 +148,7 @@ function countdown(obj, msg) {
         obj.val(wait + "秒后重新获取");
         wait--;
         setTimeout(function() {
-            countdown(obj, msg)
+          countdown(obj, msg);
         }, 1000)
     }
 }

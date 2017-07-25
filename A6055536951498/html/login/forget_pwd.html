@@ -19,7 +19,7 @@
 	<div class="find">
 	<section class="innercontent">
 		<div class="yonghu">
-			<input type="text" id="username" name="username" placeholder="请输入邮箱/手机号" value="" />
+			<input type="text" id="username" name="username" placeholder="请输入手机号" value="" />
 		</div>
 
 		<div class="submit-btn">
@@ -38,12 +38,12 @@
             layer.open({content:'用户名不能为空',time:2});
             return false;
         }
-        if(!checkMobile(username) && !checkEmail(username)){
+        if(!checkMobile(username)){
             layer.open({content:'账号格式不匹配!',time:2});
             return false;
         }
         var username = $('#username').val();
-        glo.post('/mobile/user/forget_pwd', {'username': username}, function(res) {
+        glo.post('/mobile/login/forget_pwd', {'username': username}, function(res) {
           if(res.msg) {
             glo.alert(res.msg);
           } else {

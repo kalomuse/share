@@ -1,6 +1,6 @@
 
-//var website = "http://share.tikyy.com";
-var website = "http://192.168.1.113:7002";
+var website = "http://share.tikyy.com";
+//var website = "http://192.168.1.113:7002";
 var website_zmz = "http://192.168.1.112:8010";
 
 var glo = {

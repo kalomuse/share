@@ -13,7 +13,7 @@
 <body>
 	<div id="header">
 		<h1>
-			<div class="cancel" tapmode="active" onclick="api.closeWin();"></div>
+			<div class="cancel" tapmode="active" onclick="api.closeFrame();"></div>
 			确认订单
 		</h1>
 	</div>
@@ -136,7 +136,7 @@ function openAlipay(data) {
 					sign: data.sign
 			}, function(ret, err){
 					if(ret.status){
-						api.closeWin();
+						api.closeFrame();
 						glo.open_win({url:'../user/order.html'});
 						return true;
 					}else{

@@ -136,9 +136,9 @@ function openAlipay(data) {
 					sign: data.sign
 			}, function(ret, err){
 					if(ret.status){
-						alert('支付成功');
-						glo.open_win({url:'../user/order.html'});
 						api.closeWin();
+						glo.open_win({url:'../user/order.html'});
+						return true;
 					}else{
 						glo.echo(err);
 				 }

@@ -51,16 +51,7 @@
 	// }
 
 	function openToilet(){
-		setTimeout(function(){
-			api.openWin({
-	            name: 'win_toilet',
-	            url: './win_toilet.html',
-	            opaque: true,
-	            animation: {
-	                type: 'fade'
-	            }
-	        });
-		},500);
+      glo.open_win({url: './shop/detail.html', pageParam: {id: 1}});
 	}
 
 	var toilet1 = [];

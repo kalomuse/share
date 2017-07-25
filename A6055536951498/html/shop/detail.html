@@ -76,7 +76,7 @@ apiready = function() {
 
 }
 function init() {
-  glo.get(website + '/mobile/shop/detail?id='+ api.pageParam.company_id, function(res){
+  glo.get(website + '/mobile/shop/detail?id='+ api.pageParam.id, function(res){
     var html = $api.html($api.byId('J-model-company-detail'));
     html = templates(html, res.company);
     $api.append($api.byId('main'), html);

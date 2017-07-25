@@ -24,6 +24,11 @@
 <script type="text/javascript">
 	apiready = function() {
 		glo.init();
+		glo.get('/mobile/user/order', function(res) {
+			$.each(res.order, function(i) {
+				var order = res.order[i];
+			});
+		});
 	}
 </script>
 </html>

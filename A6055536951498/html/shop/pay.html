@@ -108,7 +108,9 @@ $('.pay_style').each(function(){
 });
 
 function pay(){
-	glo.post('/mobile/Pay/getCode', {'order_id': api.pageParam.id, 'pay_code': $('.pay_style .yes').attr('value')}, function(res) {
+	glo.post('/mobile/Pay/getCode', {'server_id': api.pageParam.id, 'pay_code': $('.pay_style .yes').attr('value')}, function(res) {
+		if(res.status && res.status == 0)
+			return alert(res.msg);
 		openAlipay(res);
 	});
 }

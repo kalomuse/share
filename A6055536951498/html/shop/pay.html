@@ -137,29 +137,8 @@ function openAlipay(data) {
 			}, function(ret, err){
 					if(ret.status){
 						alert('支付成功');
-						glo.open_frame([
-							{
-									url: '../user/index.html',
-									bounces: false,
-									reload: true,
-									rect:{
-											x: 0,
-											y: 0,
-											w: 'auto',
-											h: $api.getStorage('main_h'),
-
-									}
-								}, {
-									url: '../public/footer_nav.html',
-									bounces: false,
-									rect:{
-											x: 0,
-											y: $api.getStorage('main_h'),
-											w: 'auto',
-											h: 'auto'
-									}
-								}
-						]);
+						glo.open_win({url:'../user/order.html'});
+						api.closeWin();
 					}else{
 						glo.echo(err);
 				 }

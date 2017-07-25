@@ -37,14 +37,6 @@
    <param name="apiKey" value="wxb5d49f36175df4b2"/>
    <param name="apiSecret" value="f859682ddda78fea4d4eef8acd47403f"/>
  </feature>
- <feature name="wxPay">
-   <param name="urlScheme" value="wxb5d49f36175df4b2"/>
-   <param name="apiKey" value="wxb5d49f36175df4b2"/>
-   <param name="apiSecret" value="f859682ddda78fea4d4eef8acd47403f"/>
- </feature>
- <feature name="aliPay">
-   <param name="urlScheme" value="AliPayA6987532166058"/>
- </feature>
  <feature name="QQPlus">
     <param name="urlScheme" value="tencent1106269280" />
     <param name="apiKey" value="1106269280" />

@@ -111,6 +111,8 @@ function pay(){
 	glo.post('/mobile/Pay/getCode', {'server_id': api.pageParam.id, 'pay_code': $('.pay_style .yes').attr('value')}, function(res) {
 		if(res.status && res.status == 0)
 			return alert(res.msg);
+		else if(res.status && res.status == -1)
+			return glo.open_win({url:'../login/login.html'});
 		openAlipay(res);
 	});
 }

@@ -1,0 +1,49 @@
+.page .item-list .item {border-bottom: 1px solid #eeeeee;background: #FFF;}
+.page .item-list .inner { position: relative; padding: 20px 10px 5px 100px }
+.page .item-list .pic { position: absolute; width: 68px; height: 68px; border: #e0e0e0 1px solid; padding: 2px; left: 15px; top: 24px; }
+.page .item-list .pic img { width: 100% }
+.page .item-list .name { padding-right: 10px; line-height: 25px; }
+.page .item-list .name span { vertical-align: middle;
+    font-size: 14px;
+    overflow: hidden;
+    -webkit-line-clamp: 1;
+    -webkit-box-orient: vertical;
+    display: -webkit-box;
+    font-weight: normal;
+  white-space:nowrap;
+ }
+.page .item-list .name .ico { display: inline-block; padding: 0 .7em; background-color: #f66; -webkit-border-radius: .2em; -moz-border-radius: .2em; -ms-border-radius: .2em; -o-border-radius: .2em; border-radius: .2em; margin-right: .5em; font-size: 1em; line-height: 1.4em; color: #fff }
+.page .item-list .attr { line-height: 25px; height: 25px; }
+.page .item-list .attr span { font-size: 14px; color: #999 }
+.page .item-list .price { padding: 0 5px 5px 0; height: 44px; line-height: 22px; text-align: right; }
+.page .item-list .price span { font-size: 16px; color: #f23015; vertical-align: middle; font-family: Arial; }
+.page .item-list .price span.mar_price { font-size: 14px; text-decoration: line-through; color: #999; }
+.page .item-list .delete { position: absolute; bottom: 15px; right: 1em; width: 35px; height: 35px; text-align: center; overflow: hidden }
+.page .item-list .delete .icon-shanchu { color: #999; display: block; background: url(../image/icoshanchu.jpg) no-repeat; width: 2.5em; height: 2.5em; background-size: cover; }
+.page .item-list .num { padding: 0 0 .5em }
+.page .item-list .num span { font-size: 1.4em; color: #999; vertical-align: middle }
+.xm-input-number { display: inline-block; vertical-align: middle; border: 1px solid #ddd9da }
+.xm-input-number .input-add { display: inline-block; width: 25px; height: 25px; position: relative; vertical-align: middle; background-color: #fafafa; background: url(../image/shop-cart.png) no-repeat -41px -96px; background-size: 60px; }
+.xm-input-number .input-sub { display: inline-block; width: 25px; height: 25px; position: relative; vertical-align: middle; background-color: #fafafa; background-color: #fafafa; background: url(../image/shop-cart.png) no-repeat 6px -55px; background-size: 60px }
+.xm-input-number .input-num { vertical-align: middle; display: inline-block; width: 30px; height: 25px; line-height: 25px; text-align: center; border-right: #ddd9da 1px solid; border-left: 1px solid #ddd9da; border-top: none; border-bottom: none; font-size: 18px; color: #424242; -webkit-appearance: none; border-radius: 0; -webkit-box-flex: 1; -webkit-flex: 1; flex: 1; }
+.xm-input-number .input-num span { font-size: 1.6em; color: #51555a }
+.xm-input-number .input-add.active { background-color: #fafafa; background: url(../image/shop-cart.png) no-repeat -26px -27px; background-size: 60px }
+.xm-input-number .input-sub.active { background-color: #fafafa; background: url(../image/shop-cart.png) no-repeat 6px -27px; background-size: 60px }
+.page .bottom-panel .right input.xm-button { border-radius: 5px; background-color: #FF2233; text-align: center; height: 40px; line-height: 40px; font-size: 16px; color: #fff; width: 100%; border: none; font-family: 微软雅黑; display:block }
+
+.xm-button.to_cart { background-color: #999999; }
+.xm-button-gray { background-color: #fdfdfd; border: 1px solid #bbb }
+.xm-button-gray span { color: #666 }
+input.xm-button {
+    border-radius: 5px;
+    background-color: #FF2233;
+    text-align: center;
+    height: 40px;
+    line-height: 40px;
+    font-size: 16px;
+    color: #fff;
+    width: 100%;
+    border: none;
+    font-family: 微软雅黑;
+    display: block;
+}

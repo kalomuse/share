@@ -53,27 +53,18 @@
     <li>
         <div tapmode="" onclick="glo.open_win({url: '../shop/detail.html', pageParam: {company_id: {{id}}}})" class="shop_link flex">
             <div class="shop_face_img_part">
-                <img data-original="{{background_url}}" class="shop_faceImg lazy" alt="">
+                <img src="{{background_url}}" class="shop_faceImg lazy" alt="">
             </div>
             <div class="shop_right">
-                <p class="name"><span>{{name}}</span>{{company_lable}}</p>
+                <p class="name"><span>{{name}}</span></p>
                 <div class="data_part">
                     <span class="score">评分：{{score}}</span>
-                    <span class="project_count">工程数：{{project_count}}</span>
                 </div>
                 <div class="clearfix">
-                	<p class="business">{{business}}</p>
-                	<p class="product_type">{{product_lable1}} {{product_lable2}}</p>
-                    <p class="mainIcon distance">{{distance}}</p>
+                    <p class="mainIcon distance">{{distance}}公里</p>
                 </div>
             </div>
         </div>
-        <!--<div onclick="openWin('rule')" class="merchant_tag clearfix">
-            {{is_honesty}}
-            {{is_budget}}
-            {{is_rights}}
-            {{is_quality}}
-        </div>-->
     </li>
 </script>
 
@@ -83,21 +74,21 @@
 <script type="text/javascript" src="../../script/global.js"></script>
 <script type="text/javascript">
 apiready = function() {
+  glo.show_progress();
   glo.init();
   glo.scrolltobottom(init);
   init();
 }
 
 function init() {
-  $api.post(website_zmz +'/mobile/merchant/index?zmz_source=apicloud', {
-    body: {}
-  }, function(ret) {
+  glo.post('/mobile/shop/list', {}, function(ret) {
     var companies = ret.companies;
     $.each(companies, function(i){
         var html = $api.html($api.byId('J-model-company'));
         html = toReplaceModel(html, companies[i]);
         $api.append($api.dom('.merchant'), html);
     });
+    glo.hide_progress();
   });
 }
 function baiduLocation() {
@@ -114,27 +105,14 @@ function baiduLocation() {
   });
 }
 function toReplaceModel (html, companies){
+    img = companies.img.split(',')[0];
     html = html.replace("{{id}}", companies.id);
-    html = html.replace("{{background_url}}", companies.background_url);
+    html = html.replace("{{background_url}}", website + img);
     html = html.replace("{{name}}", companies.name);
-    html = html.replace("{{score}}", companies.score);
-    html = html.replace("{{project_count}}", companies.project_count);
-    html = html.replace("{{distance}}", companies.distance);
-    html = html.replace("{{is_honesty}}", companies.is_honesty ? '<p class="bg_gray">赔</p>' : '');
-    html = html.replace("{{is_budget}}", companies.is_budget ? '<p class="bg_cyan-blue">算</p>' : '');
-    html = html.replace("{{is_rights}}", companies.is_rights ? '<p class="bg_green">维</p>' : '');
-    html = html.replace("{{is_quality}}", companies.is_quality ? '<p class="bg_blue">云</p>' : '');
-    html = html.replace("{{business}}", companies.business);
-    html = html.replace("{{product_lable1}}", companies.product_lable1);
-    html = html.replace("{{product_lable2}}", companies.product_lable2);
-    if (companies.company_lable_id == '1')
-      html = html.replace("{{company_lable}}", '<span class="company_lable_red">' + companies.company_lable + '</span>');
-    else if(companies.company_lable_id == '2')
-      html = html.replace("{{company_lable}}", '<span class="company_lable_orange">' + companies.company_lable + '</span>');
-    else {
-      html = html.replace("{{company_lable}}", '');
-    }
-
+    html = html.replace("{{score}}", 0);
+    html = html.replace("{{project_count}}", 1);
+    html = html.replace("{{distance}}", 2);
+    html = html.replace("{{business}}", 3);
     return html;
 }
 </script>

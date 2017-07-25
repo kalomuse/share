@@ -64,17 +64,9 @@
 	<!-- 确认提交 -->
 	<div class="all_part">
 	    <p class="all_money"></p>
-	    <input type="button" class="confirmBtn" onclick="openAlipay()" value="确认支付">
+	    <input type="button" class="confirmBtn" onclick="pay()" value="确认支付">
 	</div>
 </div>
-
-<script type="text/html" id="J-model-list">
-    <li class="clearfix">
-        <p class="p_name">{{name}}</p>
-        <p class="p_count">x {{count}}</p>
-        <p class="p_jinE">￥{{jinE}}</p>
-    </li>
-</script>
 </body>
 <script type="text/javascript" src="../../script/api.js"></script>
 <script type="text/javascript" src="../../script/widget/jquery.js"></script>
@@ -86,10 +78,9 @@ apiready = function () {
 
 }
 function init() {
-	$api.text($api.byId('title'), 'caonima');//标题
-	$api.text($api.byId('desc'), 'bucuo');//描述
-	$api.html($api.dom('.all_money'), '总计<span>￥'+22+'</span>');
-	$api.attr($api.dom('.all_money'), 'data-total_price', 33);
+		$api.text($api.byId('title'), api.pageParam.title);//标题
+		$api.text($api.byId('desc'), api.pageParam.desc);//描述
+		$api.html($api.dom('.all_money'), '总计<span>￥'+api.pageParam.price+'</span>');
 	/*
 	//代金券
 	$api.text($api.dom('.djq_info'), ret.voucher_name);
@@ -117,10 +108,61 @@ $('.pay_style').each(function(){
 });
 
 function pay(){
-	var order_id = api.pageParam.order_id;
-	glo.post('/mobile/Payment/getCode', {'order_id': order_id, 'pay_code': $('.pay_style .yes').attr('value')}, function(res) {
+	glo.post('/mobile/Pay/getCode', {'order_id': api.pageParam.id, 'pay_code': $('.pay_style .yes').attr('value')}, function(res) {
 		openAlipay(res);
 	});
+}
+function openAlipay(data) {
+	if($('.pay_style .yes').attr('value') == "alipay") {
+		var aliPay = api.require('aliPay');
+		aliPay.payOrder(data, function(res, err) {
+				glo.echo(res);
+				glo.echo(err);
+		});
+
+	} else if($('.pay_style .yes').attr('value') == "weixin"){
+			var wxPay = api.require('wxPay');
+			wxPay.payOrder({
+					apiKey: data.appid,
+					orderId: data.prepayid,
+					mchId: data.partnerid,
+					nonceStr: data.noncestr,
+					timeStamp: data.timestamp,
+					package: data.package,
+					sign: data.sign
+			}, function(ret, err){
+					if(ret.status){
+						alert('支付成功');
+						glo.open_frame([
+							{
+									url: '../user/index.html',
+									bounces: false,
+									reload: true,
+									rect:{
+											x: 0,
+											y: 0,
+											w: 'auto',
+											h: $api.getStorage('main_h'),
+
+									}
+								}, {
+									url: '../public/footer_nav.html',
+									bounces: false,
+									rect:{
+											x: 0,
+											y: $api.getStorage('main_h'),
+											w: 'auto',
+											h: 'auto'
+									}
+								}
+						]);
+					}else{
+						glo.echo(err);
+				 }
+			});
+	} else {
+		alert("请选择支付方式");
+	}
 }
 
 </script>

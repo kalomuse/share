@@ -20,13 +20,6 @@
   </div>
 
 <div id="main"></div>
-<div style="padding:10px 5px;">
-  <div style="font-size:14px;line-height:30px;height:30px;border-bottom:1px solid #eeeeee;">
-    地址：上海市黄浦区南京西路1080号
-  </div>
-  <div style="font-size:14px;line-height:30px;height:30px;border-bottom:1px solid #eeeeee;">电话：80082082088</div>
-
-</div>
 <div id="M_project" class="cd_tab_box" style="display: block;">
   <div class="border-frame">
       <div class="border-yellow">产 品</div>
@@ -55,9 +48,15 @@
         </div>
     </div>
 </div>
+<div style="padding:10px 5px;">
+  <div style="font-size:14px;line-height:30px;height:30px;border-bottom:1px solid #eeeeee;">
+    地址：{{address}}
+  </div>
+  <div style="font-size:14px;line-height:30px;height:30px;border-bottom:1px solid #eeeeee;">电话：{{tel}}</div>
+</div>
 </script>
 <script type="text/html" id="J-model-products">
-  <div class="product_box" onclick="openNewFrame('service_detail',{{product_id}})">
+  <div class="product_box" onclick="glo.open_win({url: '../shop/pay.html', pageParam:{price: {{price}}, title: '{{title}}', desc: '{{desc}}', id:{{product_id}}}})">
       <img src="{{product_image_url}}">
       <p class="tit">{{product_name}}</p>
       <p class="mkt-price">¥{{product_new_price}}</p>
@@ -71,45 +70,49 @@
 <script type="text/javascript" src="../../script/global.js"></script>
 <script type="text/javascript">
 apiready = function() {
+  glo.show_progress();
   glo.init();
   init();
 
 }
 function init() {
-  $api.get(website_zmz + '/mobile/merchant/detail/'+ api.pageParam.company_id +'?zmz_source=apicloud', function(res){
+  glo.get(website + '/mobile/shop/detail?id='+ api.pageParam.company_id, function(res){
     var html = $api.html($api.byId('J-model-company-detail'));
     html = templates(html, res.company);
     $api.append($api.byId('main'), html);
-
     var products = res.products;
-
     $.each(products, function(i){
         var products_html = $('#J-model-products').html();
         products_html = templates_products(products_html, products[i]);
         $('#M_project .project').append(products_html);
     })
+    glo.hide_progress();
   });
 }
 function templates(html, company){
+    img = company.img.split(',')[1];
     //头部信息
-    html = html.replace("{{background_url}}", company.background_url);
-    html = html.replace("{{score}}", company.score!="" ? company.score: '');
-    html = html.replace("{{collection_count}}", company.collection_count);
-    html = html.replace("{{user_id}}", company.user_id);
-    html = html.replace("{{assess_count}}", company.assess_count);
-    html = html.replace("{{user_id}}", company.user_id);
-    html = html.replace("{{project_count}}", company.project_count);
+    html = html.replace("{{background_url}}", website + img);
+    html = html.replace("{{address}}", company.address);
+    html = html.replace("{{tel}}", company.tel);
+    html = html.replace("{{score}}", 0);
+    html = html.replace("{{collection_count}}", 1);
+    html = html.replace("{{assess_count}}", 2);
+    html = html.replace("{{project_count}}", 3);
     return html;
 }
 
 function templates_products(products_html, products) {
-
+    img = products.img.split(',')[1];
     products_html = products_html.replace("{{product_id}}", products.id);
+    products_html = products_html.replace("{{title}}", products.name);
+    products_html = products_html.replace("{{desc}}", products.desc?products.desc:'');
+    products_html = products_html.replace("{{price}}", products.price);
     products_html = products_html.replace("{{product_name}}", products.name);
-    products_html = products_html.replace("{{product_image_url}}", products.img_url);
-    products_html = products_html.replace("{{product_old_price}}", products.old_price);
-    products_html = products_html.replace("{{product_new_price}}", products.new_price);
-    products_html = products_html.replace("{{product_buy_count}}", products.order_quantity);
+    products_html = products_html.replace("{{product_image_url}}", website + img);
+    products_html = products_html.replace("{{product_old_price}}", products.market_price);
+    products_html = products_html.replace("{{product_new_price}}", products.price);
+    products_html = products_html.replace("{{product_buy_count}}", 3);
     return products_html;
 }
 

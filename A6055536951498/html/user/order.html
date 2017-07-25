@@ -7,8 +7,11 @@
     <meta name="apple-mobile-web-app-status-bar-style" content="black">
     <meta name="format-detection" content="telephone=no">
     <link rel="stylesheet" type="text/css" href="../../css/common.css" />
-    <link rel="stylesheet" type="text/css" href="../../css/setting.css" />
+    <link rel="stylesheet" type="text/css" href="../../css/page.css" />
     <title>我的订单</title>
+		<style>
+
+		</style>
 </head>
 <body>
   <div id="header">
@@ -17,6 +20,52 @@
       我的订单
     </h1>
   </div>
+	<div id="main"></div>
+<script type="text/html" id="J-model-orders">
+<div class="page">
+	<div class="item-list">
+		<div class="item">
+         <div class="inner">
+           <div style="width:60%; float:left; height:98px;">
+             <div class="pic">
+                 <a href="/index.php/Mobile/Goods/goodsInfo/id/67.html"><img src="{{product_image_url}}"></a>
+             </div>
+             <div class="name">
+               <span>  {{product_name}} </span>
+             </div>
+             <div class="attr">
+                 <span></span>
+             </div>
+             <div class="num">
+                 <div class="xm-input-number">
+                   <div class="act_wrap">
+                        <a href="javascript:;" onclick="switch_num(-1,4044,999);" id="jiannum6" class="input-sub active"></a>
+                     	<input id="goods_num[4044]" type="text" onkeydown="if(event.keyCode == 13) event.returnValue = false" name="goods_num[4044]" value="1" class="input-num" onblur="ajax_cart_list()">
+                     	<a href="javascript:;" onclick="switch_num(1,4044,999);" class="input-add active"></a>
+                     </div>
+                  </div>
+             </div>
+           </div>
+           <div style=" position:absolute; right:0px; top:20px; width:100px; height:98px;">
+             <div class="price">
+               <span class="mar_price">￥{{product_old_price}}元</span>
+               <br>
+               <span>￥{{product_new_price}}元</span>
+              </div>
+             <div>
+							 <div class="delete">
+	               <a href="javascript:void(0);" onclick="del_cart_goods(4044)">
+	                 <div class="icon-shanchu"></div>
+	               </a>
+             		</div>
+              </div>
+           </div>
+           <div style="height:0px; line-height:0px; clear:both;"></div>
+         </div>
+       </div>
+  </div>
+</div>
+</script>
 </body>
 <script type="text/javascript" src="../../script/api.js"></script>
 <script type="text/javascript" src="../../script/widget/jquery.js"></script>
@@ -25,10 +74,35 @@
 	apiready = function() {
 		glo.init();
 		glo.get('/mobile/user/order', function(res) {
-			$.each(res.order, function(i) {
-				var order = res.order[i];
-			});
+			var orders  = res.order;
+			$.each(orders, function(i){
+	        var orders_html = $('#J-model-orders').html();
+	        orders_html = templates_orders(orders_html, orders[i]);
+	        $('#main').append(orders_html);
+	    })
 		});
 	}
+	function templates_orders(products_html, products) {
+	    img = products.server_img.split(',')[1];
+	    products_html = products_html.replace("{{product_name}}", products.server_name);
+	    products_html = products_html.replace("{{product_image_url}}", website + img);
+	    products_html = products_html.replace("{{product_old_price}}", products.total_amount);
+	    products_html = products_html.replace("{{product_new_price}}", products.order_amount);
+	    return products_html;
+	}
+	/**
+	 * 购买商品数量加加减减
+	 * 购买数量 , 购物车id , 库存数量
+	 */
+	function switch_num(num,cart_id,store_count)
+	{
+	    var num2 = parseInt($("input[name='goods_num["+cart_id+"]']").val());
+	    num2 += num;
+	    if(num2 < 1) num2 = 1; // 保证购买数量不能少于 1
+	    $("input[name='goods_num["+cart_id+"]']").val(num2);
+
+	    price_sum();
+	}
+
 </script>
 </html>

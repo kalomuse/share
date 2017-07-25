@@ -130,11 +130,7 @@ var glo = {
         name: 'root',
         script: 'closeSideNav()'
     });
-    $api.rmStorage('user_id');
-    $api.rmStorage('uname');
-    $api.rmStorage('head_pic');
-    $api.rmStorage('mobile');
-    $api.rmStorage('token');
+
     api.toast({
         msg : '清除成功',
         duration : 2000,
@@ -143,6 +139,12 @@ var glo = {
   },
   logout: function() {
     var self = this;
+    $api.rmStorage('user_id');
+    $api.rmStorage('uname');
+    $api.rmStorage('head_pic');
+    $api.rmStorage('mobile');
+    $api.rmStorage('token');
+
     glo.get('/mobile/login/logout', function() {
       self.clear();
       api.closeWin();

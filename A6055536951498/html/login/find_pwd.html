@@ -81,6 +81,7 @@ function sendcode(o){
 }
 
 apiready = function() {
+  glo.init();
   var pageParam = api.pageParam;
   if(pageParam.field == 'mobile') {
     $('#l_mobile_phone').text(pageParam.username);

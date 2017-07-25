@@ -142,8 +142,12 @@ var glo = {
     });
   },
   logout: function() {
-   this.clear();
-   api.closeWin();
+    var self = this;
+    glo.get('/mobile/login/logout', function() {
+      self.clear();
+      api.closeWin();
+
+    });
   },
   reload: function(callback) {
     var self = this;

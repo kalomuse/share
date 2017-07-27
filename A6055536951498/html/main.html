@@ -20,6 +20,23 @@
   }
 	</style>
   <script>
+  function scanner(){
+    var scanner = api.require('scanner');
+    scanner.open(function(ret,err) {
+      if(ret && ret.msg) {
+        var msg = ret.msg.split('jiashanquan.top/download/?');
+        if(msg[1]) {
+          var code = msg[1];
+          glo.get('/mobile/common/check_shop?code=' + code, function(res) {
+            if(res.status == 1) {
+              glo.open_frame({url: './shop/pay.html', pageParam:{price: res.price, title: res.name, desc: res.desc, id:res.id}});
+            } else {
+              glo.echo(res.msg);
+            }
+          });
+        }
+      }});
+  };
   function dropping(){
       glo.open_win({
         animation: {
@@ -32,7 +49,7 @@
   </script>
 </head>
 <body>
-  <div class="shit" tapmode onclick="dropping();">选择门店</div>
+  <div class="shit" tapmode onclick="scanner();">扫码支付</div>
 </body>
 <script type="text/javascript" src="../script/api.js"></script>
 <script type="text/javascript" src="../script/widget/jquery.js"></script>

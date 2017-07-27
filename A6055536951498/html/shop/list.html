@@ -76,6 +76,7 @@
 apiready = function() {
   glo.show_progress();
   glo.init();
+  glo.reload(reload);
   glo.scrolltobottom(init);
   init();
 }
@@ -90,6 +91,10 @@ function init() {
     });
     glo.hide_progress();
   });
+}
+function reload() {
+  $('.merchant').html('');
+  init();
 }
 function baiduLocation() {
   var baiduLocation = api.require('baiduLocation');

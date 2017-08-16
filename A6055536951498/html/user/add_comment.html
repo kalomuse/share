@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="format-detection" content="telephone=no">
+    <link rel="stylesheet" type="text/css" href="../../css/common.css" />
+    <link rel="stylesheet" type="text/css" href="../../css/user.css" />
+    <title>评论</title>
+		<style>
+
+		</style>
+</head>
+<body>
+  <div id="header">
+    <h1 style="color:black;">
+      <div class="cancel" tapmode="active" onclick="api.closeWin();"></div>
+      评论
+    </h1>
+  </div>
+	<div id="main"></div>
+	<div>
+		<form id="add_comment" method="post" enctype="multipart/form-data" onSubmit="return validate_comment()">
+		  <input type="hidden" name="order_id" value="订单ID">
+		  <input type="hidden" name="goods_id" value="产品ID">
+		  <div class="pj">
+		    <dl>
+		      <dt><img src="{$order_goods.goods_id|goods_thum_images=200,200}" width="50"/></dt>
+		      <dd>
+		        <p>名称名称</p>
+		        <span> 111111</span>
+		      </dd>
+		    </dl>
+		    <div class="pingfen">
+		      <div class="w600 content">
+		        <textarea id="content_13" name="content" placeholder="对你购买的商品进行评价" required=""></textarea>
+		      </div>
+		      <h2>评分:</h2>
+		      <ul>
+		        <li>与描述相符：</li>
+		        <ul class="jsstar" style=" width:80%"> <span></span>
+		          <input name="goods_rank" value="0" type="hidden">
+		          <li  title="1"></li>
+		          <li  title="2"></li>
+		          <li  title="3"></li>
+		          <li  title="4"></li>
+		          <li  title="5"></li>
+		        </ul>
+		      </ul>
+		      <ul>
+		        <li>客服服务质量：</li>
+		          <ul class="jsstar" style=" width:80%"> <span></span>
+		            <input name="service_rank" value="0" type="hidden">
+		            <li title="1"></li>
+		            <li title="2"></li>
+		            <li title="3"></li>
+		            <li title="4"></li>
+		            <li title="5"></li>
+		          </ul>
+		      </ul>
+		      <ul>
+		        <li>物流发货速度：</li>
+		        <ul class="jsstar" style=" width:80%"><span></span>
+		          <input name="deliver_rank" value="0" type="hidden">
+		          <li title="1"></li>
+		          <li title="2"></li>
+		          <li title="3"></li>
+		          <li title="4"></li>
+		          <li title="5"></li>
+		        </ul>
+		      </ul>
+		    </div>
+		    <div class="p_main">
+		      <span style=" font-size:14px; display:block; width:100%; overflow:hidden">
+		      <input type="checkbox" name="hide_username" value="0">匿名评价</span>
+		    </div>
+		    <div class="p_main">
+		      <span style=" display:block; width:90%; overflow:hidden; margin:auto; margin-bottom:20px; margin-top:20px;">
+		        <input name="" type="button" value="提交" class="m_pingjia" onclick="on_submit()" />
+		      </span>
+		    </div>
+		  </div>
+		</form>
+	</div>
+</body>
+<script type="text/javascript" src="../../script/widget/jquery-1.8.2.min.js"></script>
+<script type="text/javascript" src="../../script/api.js"></script>
+<script type="text/javascript" src="../../script/widget/jquery.js"></script>
+<script type="text/javascript" src="../../script/global.js"></script>
+<script type="text/javascript">
+	apiready = function() {
+		glo.init();
+	}
+	$(document).ready(function(){
+	 	$(".jsstar li").mouseover(function(){
+	        $(this).parent().find("li").css({"background-position":"left top"});
+	        for(var i=0; i<$(this).attr("title"); i++){
+	        	$(this).parent().find("li").eq(i).css({"background-position":"left bottom"});
+	       }
+		});
+
+		$(".jsstar li").mouseout(function(){
+	    	$(this).parent().find("li").css({"background-position":"left top"});
+	     	for(var i=0; i<$(this).parent().find("input").val(); i++){
+	        	$(this).parent().find("li").eq(i).css({"background-position":"left bottom"});
+	    	}
+		});
+
+		$(".jsstar li").click(function(){
+	   	 	$(this).parent().find("input").val($(this).attr("title"));
+	   	 	$(this).parent().find("span").html($(this).attr("title")+"星");
+	    });
+	});
+</script>
+</html>

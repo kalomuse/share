@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="format-detection" content="telephone=no">
+    <link rel="stylesheet" type="text/css" href="../../css/common.css" />
+    <link rel="stylesheet" type="text/css" href="../../css/page.css" />
+    <link rel="stylesheet" type="text/css" href="../../css/user.css" />
+    <title>我的评论</title>
+		<style>
+
+		</style>
+</head>
+<body>
+  <div id="header">
+    <h1 style="color:black;">
+      <div class="cancel" tapmode="active" onclick="api.closeWin();"></div>
+      我的评论
+    </h1>
+  </div>
+	<div id="main"></div>
+<div class="page">
+  <div class="">
+    <div class="pingjia">
+      <h2>购买时间：2017-8-14</h2>
+      <dl>
+        <dt><img src="../../image/pay_icon.png"></dt>
+        <dd><span>名称名称</span><strong>￥0.1</strong></dd>
+        <dd>
+          <a class="remark" onclick="glo.open_frame({url: '../user/add_comment.html'})" >评价订单</a>
+          <a class="remark">查看订单</a>
+        </dd>
+      </dl>
+    <div class="pj_main">
+      <ul>
+        <li><em>评价：</em><img src="../../image/stars1.png"></li>
+        <!-- <li><em>评价：</em><img src="../../image/stars2.png"></li>
+        <li><em>评价：</em><img src="../../image/stars3.png"></li>
+        <li><em>评价：</em><img src="../../image/stars4.png"></li>
+        <li><em>评价：</em><img src="../../image/stars5.png"></li> -->
+        <li class="pj_w">这里是评价</li>
+      </ul>
+    </div>
+    </div>
+  </div>
+</div>
+</body>
+<script type="text/javascript" src="../../script/api.js"></script>
+<script type="text/javascript" src="../../script/widget/jquery.js"></script>
+<script type="text/javascript" src="../../script/global.js"></script>
+<script type="text/javascript">
+	apiready = function() {
+		glo.init();
+	}
+</script>
+</html>

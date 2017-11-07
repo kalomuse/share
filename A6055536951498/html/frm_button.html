@@ -16,12 +16,13 @@
 	</style>
 </heade>
 <body style="margin: 0;">
-  <div class="shit" tapmode onclick="scanner();">扫码支付</div>
+  <div class="shit" tapmode onclick="dropping();">扫码支付</div>
 </body>
 <script type="text/javascript" src="../script/api.js"></script>
 <script type="text/javascript" src="../script/widget/jquery.js"></script>
 <script type="text/javascript" src="../script/global.js"></script>
 <script>
+/*
 function scanner(){
   var scanner = api.require('scanner');
   scanner.open(function(ret,err) {
@@ -39,7 +40,9 @@ function scanner(){
       }
     }});
 };
+*/
 function dropping(){
+  alert('c');
     glo.open_win({
       animation: {
         type: 'movein',
